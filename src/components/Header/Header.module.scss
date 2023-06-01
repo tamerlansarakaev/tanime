@@ -1,0 +1,40 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    font-family: RapierZero;
+    font-size: 24px;
+    text-transform: uppercase;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      transition: 0.5s;
+    }
+
+    a:hover {
+      color: var(--hoverRedColor);
+    }
+  }
+
+  .links {
+    display: flex;
+    gap: 33px;
+    text-transform: uppercase;
+    list-style-type: none;
+    font-size: 17px;
+    font-weight: 500;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      transition: 0.5s;
+    }
+
+    a:hover {
+      color: var(--hoverRedColor);
+    }
+  }
+}
