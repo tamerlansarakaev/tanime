@@ -15,5 +15,6 @@ export interface IAnime {
   genres: Array<string>;
   description: string;
   itemImage: string;
+  backgroundImage: string;
   episodes: AnimeEpisode[];
 }

@@ -1,6 +1,23 @@
 .main {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+  
   .title {
     font-size: 70px;
     font-weight: 700;
+  }
+}
+
+
+@media screen and (max-width:765px) {
+  .title {
+    font-size: 40px !important;
+  }
+}
+
+@media screen and (max-width:375px) {
+  .title {
+    font-size: 35px !important;
   }
 }
