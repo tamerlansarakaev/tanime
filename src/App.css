@@ -42,8 +42,8 @@ h2 {
   position: fixed;
   left: 0;
   top: 0;
+  z-index: -1;
   width: 100%;
-  z-index: 2;
   opacity: 7%;
   object-fit: cover;
   user-select: none;
@@ -54,7 +54,6 @@ h2 {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 42px;
   box-sizing: border-box;
   width: 100%;
   z-index: 5;

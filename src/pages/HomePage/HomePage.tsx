@@ -4,8 +4,14 @@ import { useAppDispatch, useAppSelector } from "../../redux/config";
 // Api
 import ApiService from "../../api/actions/index";
 
+// BG
+import BackgroundImage from "../../assets/images/background.webp";
+
 // Interface
 import { IAnime } from "../../types/index";
+
+// Styles
+import styles from "./HomePage.module.scss";
 
 import AnimeCardList from "../../components/AnimeCardList/AnimeCardList";
 import Main from "../../components/Main/Main";
@@ -25,13 +31,14 @@ const HomePage = () => {
 
   async function handleClickMore() {
     setStatus(true);
-    const newAnimeList = await ApiService.getAnimeFromPage(page + 1);
+    const newPage = page + 1;
+    const newAnimeList = await ApiService.getAnimeFromPage(newPage);
 
     if (newAnimeList) {
       dispatch(
         loadAnime({
           animeList: [...animeList, ...newAnimeList] as IAnime[],
-          page,
+          page: newPage,
         })
       );
     }
@@ -40,35 +47,38 @@ const HomePage = () => {
   }
 
   return (
-    <Main title="СПИСОК АНИМЕ">
-      <AnimeCardList animeList={animeList} limit={limit} />
-      {limit <= animeList.length && (
-        <Button
-          onClick={handleClickMore}
-          disabled={status}
-          sx={{
-            width: "fit-content",
-            margin: "0 auto",
-            borderRadius: "12px",
-            background: "var(--standartRedColor)",
-            padding: "10px 22px",
-            fontWeight: 700,
-            fontSize: "18px",
-            lineHeight: "21px",
-            textTransform: "uppercase",
-            color: "white",
-            ":hover": {
-              background: "var(--hoverRedColor)",
-            },
-            ":disabled": {
+    <>
+      <img src={BackgroundImage} className="bg" />
+      <div className={styles.container}>
+        <Main title="СПИСОК АНИМЕ">
+          <AnimeCardList animeList={animeList} limit={limit} />
+          <Button
+            onClick={handleClickMore}
+            disabled={status}
+            sx={{
+              width: "fit-content",
+              margin: "0 auto",
+              borderRadius: "12px",
+              background: "var(--standartRedColor)",
+              padding: "10px 22px",
+              fontWeight: 700,
+              fontSize: "18px",
+              lineHeight: "21px",
+              textTransform: "uppercase",
               color: "white",
-            },
-          }}
-        >
-          {status ? "Загрузка..." : "Показать больше"}
-        </Button>
-      )}
-    </Main>
+              ":hover": {
+                background: "var(--hoverRedColor)",
+              },
+              ":disabled": {
+                color: "white",
+              },
+            }}
+          >
+            {status ? "Загрузка..." : "Показать больше"}
+          </Button>
+        </Main>
+      </div>
+    </>
   );
 };
 
