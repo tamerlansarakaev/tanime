@@ -12,3 +12,9 @@ export function checkGenres(genres: Array<string>) {
 
   return comma;
 }
+
+export function deleteComma(text: string) {
+  if (!text) return text;
+  const resultText = text.replace(",", "");
+  return resultText;
+}

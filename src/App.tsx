@@ -16,10 +16,10 @@ import { loadAnime } from "./redux/reducers/dataReducer";
 import { IAnime } from "./types";
 
 // BackgroundImage
-import BackgroundImage from "./assets/images/background.webp";
 
 import "./App.css";
 import "./defaultStyles/index.scss";
+import WatchPage from "./pages/WatchPage/WatchPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -40,12 +40,12 @@ function App() {
 
   return (
     <div className="App">
-      <img src={BackgroundImage} className="bg" />
       <div className="container">
         <BrowserRouter>
           <Header logoTitle="Tanime" links={defaultLinks} />
           <Routes>
             <Route element={<HomePage />} path="/" />
+            <Route element={<WatchPage />} path="/anime/:name" />
           </Routes>
         </BrowserRouter>
       </div>

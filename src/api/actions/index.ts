@@ -1,27 +1,31 @@
 import { api } from "..";
+import { IAnimeResponse } from "../../types";
 
 class ApiService {
   async getAllAnime() {
     const response = (await api.get("/list/last")).data;
-    const resultData = response.map((anime: any) => {
+    const resultData = response.map((anime: IAnimeResponse) => {
+      const player = anime.player.host;
       if (!anime.player.list) return;
       const seriesList = Object.values(anime.player.list);
-      const resultEpisodesData = seriesList.map((episode: any) => {
+      const resultEpisodesData = seriesList.map((episode) => {
         return {
           episode: episode.episode,
           name: episode.name,
-          previewImage: episode.preview,
+          previewImage: episode.preview
+            ? "https://www.anilibria.tv/" + episode.preview
+            : null,
           video: {
-            fhd: episode.hls.fhd,
-            hd: episode.hls.hd,
-            sd: episode.hls.sd,
+            fhd: "https://" + player + episode.hls.fhd,
+            hd: "https://" + player + episode.hls.hd,
+            sd: "https://" + player + episode.hls.sd,
           },
         };
       });
-
       return {
         name: anime.names.ru,
         id: anime.id,
+        code: anime.code,
         description: anime.description,
         genres: anime.genres,
         itemImage: "https://www.anilibria.tv" + anime.posters.small.url,
@@ -36,24 +40,25 @@ class ApiService {
     try {
       const response = (await api.get(`/list/${page}`)).data;
       const resultData = response.map((anime: any) => {
+        const player = anime.player.host;
         if (!anime.player.list) return;
         const seriesList = Object.values(anime.player.list);
         const resultEpisodesData = seriesList.map((episode: any) => {
           return {
             episode: episode.episode,
             name: episode.name,
-            previewImage: episode.preview,
+            previewImage: "https://www.anilibria.tv/" + episode.preview,
             video: {
-              fhd: episode.hls.fhd,
-              hd: episode.hls.hd,
-              sd: episode.hls.sd,
+              fhd: "https://" + player + episode.hls.fhd,
+              hd: "https://" + player + episode.hls.hd,
+              sd: "https://" + player + episode.hls.sd,
             },
           };
         });
-
         return {
-          name: anime.names.ru,
           id: anime.id,
+          name: anime.names.ru,
+          code: anime.code,
           description: anime.description,
           genres: anime.genres,
           itemImage: "https://www.anilibria.tv" + anime.posters.small.url,
