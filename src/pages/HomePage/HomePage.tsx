@@ -33,7 +33,6 @@ const HomePage = () => {
     setStatus(true);
     const newPage = page + 1;
     const newAnimeList = await ApiService.getAnimeFromPage(newPage);
-
     if (newAnimeList) {
       dispatch(
         loadAnime({
