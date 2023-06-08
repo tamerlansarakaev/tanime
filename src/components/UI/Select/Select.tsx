@@ -2,6 +2,8 @@ import React from "react";
 
 import styles from "./Select.module.scss";
 
+import SwitchIcon from "./icons/swap.svg";
+
 type Props = {
   value: string | number;
   onClick?: (event: string | number) => void;
@@ -34,10 +36,16 @@ const Select = ({ value, onClick, elementvalueList, type }: Props) => {
       }}
       onClick={() => setStatus(!status)}
     >
-      <span className={styles.text}>
-        {value}
-        {checkType()}
-      </span>
+      <div style={{ display: "flex", boxSizing: "border-box" }}>
+        <span className={styles.text}>
+          {value}
+          {checkType()}
+        </span>
+        <img
+          src={SwitchIcon}
+          style={{ paddingRight: "10px", cursor: "pointer" }}
+        />
+      </div>
       {status && (
         <ul className={styles.list}>
           {elementvalueList.map((state, i) => (

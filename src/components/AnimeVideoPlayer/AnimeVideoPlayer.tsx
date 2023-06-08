@@ -106,6 +106,22 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
   }, []);
 
   React.useEffect(() => {
+    const handleScreenRotation = () => {
+      if (isMobile) {
+        document.documentElement.classList.toggle("rotate-screen");
+      } else {
+        document.documentElement.classList.remove("rotate-screen");
+      }
+    };
+
+    window.addEventListener("orientationchange", handleScreenRotation);
+
+    return () => {
+      window.removeEventListener("orientationchange", handleScreenRotation);
+    };
+  }, [isMobile]);
+
+  React.useEffect(() => {
     changeProgress();
   }, [url, rewind]);
 

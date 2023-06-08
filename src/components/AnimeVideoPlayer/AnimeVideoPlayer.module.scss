@@ -13,16 +13,17 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    bottom: 20px;
+    bottom: 5px;
     width: 95%;
-    left: 20px;
+    left: 50% !important;
+    transform: translateX(-50%);
 
     .elements {
       display: flex;
       align-items: center;
       gap: 20px;
     }
-    
+
     &,
     .elementsGroup {
       pointer-events: none;
@@ -49,7 +50,7 @@
 
     .controlPanel {
       position: absolute;
-      bottom: 40px;
+      bottom: 5px;
       width: 98%;
       left: 20px;
     }
@@ -98,5 +99,27 @@
 .play:hover {
   .play__icon {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .container {
+    .controlPanel {
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+    }
+    
+    &:fullscreen {
+      .controlPanel {
+        left: 50%;
+        width: 90%;
+        transform: translateX(-50%);
+      }
+
+      video {
+        height: 100vh !important;
+      }
+    }
   }
 }
