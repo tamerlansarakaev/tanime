@@ -1,4 +1,5 @@
 export function checkGenres(genres: Array<string>) {
+  if(!genres) return
   let comma = "";
   const sliceArray = genres.slice(-3, -1);
 

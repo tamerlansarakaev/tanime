@@ -1,7 +1,7 @@
-type AnimeEpisode = {
+export type AnimeEpisode = {
   name: string;
   episode: number;
-  previewImage: string;
+  previewImage: string | null;
   video: {
     fhd: string;
     hd: string;
@@ -20,7 +20,7 @@ export interface IAnime {
   episodes: AnimeEpisode[];
 }
 
-interface IEpisode {
+export interface IEpisode {
   episode: number;
   name: string;
   preview: string;

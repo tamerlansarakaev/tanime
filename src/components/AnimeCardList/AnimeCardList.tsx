@@ -15,7 +15,7 @@ const AnimeCardList = React.forwardRef<HTMLDivElement, IAnimeCardList>(
     return (
       <div className={styles.container} ref={ref}>
         {animeList.map((episode, i) => {
-          if (i < limit) {
+          if (i < limit && episode.episodes.length) {
             return <AnimeCard {...episode} key={i} />;
           }
         })}
