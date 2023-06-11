@@ -3,64 +3,46 @@ import ReactPlayer from "react-player";
 
 import styles from "./AnimeVideoPlayer.module.scss";
 
+// Components
 import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
 
-import PlayIcon from "../../assets/images/playIcon.svg";
-import { OnProgressProps } from "react-player/base";
+// Types
+import { IVideoPlayerProps } from "../../types/componentTypes";
+
+// Icons
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-
-import Stack from "@mui/material/Stack";
 import VolumeDown from "@mui/icons-material/VolumeDown";
 import VolumeUp from "@mui/icons-material/VolumeUp";
+import PlayIcon from "../../assets/images/playIcon.svg";
 
-interface IVideoPlayerProps {
-  url: string;
-  className?: string;
-  previewImage?: string;
-  onPlay: (e: boolean) => void;
-  children: React.ReactNode;
-  onChangeProgress: (e: string | number) => void;
-  progress: number;
-  onProgress?: (e: OnProgressProps) => void;
-}
+// Utils
+import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
 
-const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
-  url,
-  className,
-  previewImage,
-  onProgress,
-  children,
-  onPlay,
-  onChangeProgress,
-  progress,
-}) => {
+const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   const [play, setPlay] = React.useState<boolean>(false);
   const [firstPlay, setFirstPlay] = React.useState(true);
   const [rewind, setRewind] = React.useState(0);
   const [duration, setDuration] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
+  const [isSupportedFullScreen, setIsSupportedFullSreen] =
+    React.useState(false);
+  const [visiblePanel, setVisibilePanel] = React.useState(true);
+  const [currentPlayTime, setCurrentPlayTime] = React.useState(0);
 
   const playerRef = React.useRef<ReactPlayer | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const changeProgress = React.useCallback(() => {
-    if (playerRef.current && playerRef.current.getCurrentTime() !== progress) {
-      playerRef.current.seekTo(progress);
+    if (
+      playerRef.current &&
+      playerRef.current.getCurrentTime() !== props.progress
+    ) {
+      playerRef.current.seekTo(props.progress);
     }
-  }, [progress]);
-
-  function handleToFullScreen() {
-    if (!containerRef.current) return;
-    const validate = document.fullscreenElement ? true : false;
-
-    if (!validate) {
-      containerRef.current.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  }
+  }, [props.progress]);
 
   const handleLoadedMetadata = (duration: number) => {
     setDuration(duration);
@@ -75,13 +57,13 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
           return;
         }
         case "f": {
-          handleToFullScreen();
+          handleToFullScreen(containerRef);
           return;
         }
         case "ArrowRight": {
           if (
             playerRef.current &&
-            playerRef.current.getCurrentTime() !== progress
+            playerRef.current.getCurrentTime() !== props.progress
           ) {
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
           }
@@ -90,7 +72,7 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
         case "ArrowLeft": {
           if (
             playerRef.current &&
-            playerRef.current.getCurrentTime() !== progress
+            playerRef.current.getCurrentTime() !== props.progress
           ) {
             playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
           }
@@ -107,13 +89,27 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
 
   React.useEffect(() => {
     changeProgress();
-  }, [url, rewind]);
+
+    if (!rewind && playerRef.current) {
+      playerRef.current.seekTo(0);
+    }
+  }, [props.url, rewind]);
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) return;
+    const isSupported = checkFullscreenSupport();
+    setIsSupportedFullSreen(isSupported);
+  }, []);
 
   return (
     <div
       style={{ position: "relative", width: "100%" }}
       ref={containerRef}
       className={styles.container}
+      onMouseLeave={() => setVisibilePanel(false)}
+      onMouseEnter={() => setVisibilePanel(true)}
     >
       {firstPlay && (
         <div
@@ -127,13 +123,16 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
           <img src={PlayIcon} className={styles.play__icon} />
         </div>
       )}
-      {previewImage && firstPlay && (
-        <img src={previewImage} className={styles.previewImage} />
+      {props.previewImage && firstPlay && (
+        <img src={props.previewImage} className={styles.previewImage} />
       )}
-      <div className={className}>
+      <div
+        className={props.className}
+        onDoubleClick={() => handleToFullScreen(containerRef)}
+      >
         <ReactPlayer
-          url={url}
-          controls={false}
+          url={props.url}
+          controls={!isSupportedFullScreen}
           ref={playerRef}
           playing={play}
           volume={volume}
@@ -141,132 +140,143 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = ({
           onEnded={() => {
             setRewind(0);
           }}
-          onPlay={() => onPlay(true)}
+          onPlay={() => props.onPlay(true)}
           onClick={() => {
             setPlay((prev) => !prev);
           }}
-          onDoubleClick={handleToFullScreen}
-          progress={progress}
+          progress={props.progress}
           progressInterval={1000}
-          onProgress={onProgress}
+          onProgress={(e) => {
+            props.onProgress && props.onProgress(e);
+            setCurrentPlayTime(e.playedSeconds);
+          }}
         />
       </div>
 
-      <div className={styles.controlPanel}>
-        <Slider
-          max={duration}
-          value={progress}
-          onChange={(e: any) => {
-            onChangeProgress(e.target.value);
-            setRewind(e.target.value);
-          }}
-          sx={{
-            color: "#f74343",
-            opacity: "0.5",
+      <div
+        className={
+          visiblePanel ? styles.controlGroup : styles.controlGroupDisabled
+        }
+      >
+        {isSupportedFullScreen && (
+          <div className={styles.controlPanel}>
+            <Slider
+              max={duration}
+              value={currentPlayTime}
+              onChange={(e: any) => {
+                props.onChangeProgress(e.target.value);
+                setRewind(e.target.value);
+              }}
+              sx={{
+                color: "#f74343",
+                opacity: "0.5",
 
-            ":hover": {
-              opacity: 1,
+                ":hover": {
+                  opacity: 1,
 
-              "& .MuiSlider-track": {
-                cursor: "pointer",
-              },
-
-              "& .MuiSlider-thumb": {
-                width: "18px",
-                height: "18px",
-              },
-            },
-
-            "& .MuiSlider-thumb": {
-              width: 0,
-              height: 0,
-              transition: "0.2s",
-            },
-            "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible": {
-              boxShadow: "none",
-            },
-            "& .MuiSlider-thumb.Mui-active": {
-              boxShadow: "none",
-            },
-            "& .MuiSlider-track": {
-              cursor: "default",
-            },
-          }}
-        />
-        <div className={styles.elementsGroup}>
-          <div className={styles.elements}>
-            {play ? (
-              <PauseIcon
-                onClick={() => setPlay(false)}
-                sx={{
-                  cursor: "pointer",
-                }}
-              />
-            ) : (
-              <PlayArrowIcon
-                onClick={() => setPlay(true)}
-                sx={{
-                  cursor: "pointer",
-                }}
-              />
-            )}
-            <Stack spacing={2} direction="row" alignItems="center">
-              <VolumeDown />
-              <Slider
-                aria-label="Volume"
-                max={100}
-                value={volume * 100}
-                onChange={(e: any) => setVolume(e.target.value / 100)}
-                sx={{
-                  color: "#fff",
-                  opacity: "0.5",
-                  width: "50px",
-                  cursor: "pointer",
-
-                  ":hover": {
-                    opacity: 1,
-                    "& .MuiSlider-thumb": {
-                      width: "10px",
-                      height: "10px",
-                    },
-
-                    "& .MuiSlider-track": {
-                      cursor: "pointer",
-                    },
+                  "& .MuiSlider-track": {
+                    cursor: "pointer",
                   },
 
                   "& .MuiSlider-thumb": {
-                    width: 0,
-                    height: 0,
-                    transition: "0.2s",
+                    width: "18px",
+                    height: "18px",
                   },
-                  "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible":
-                    {
-                      boxShadow: "none",
-                    },
-                  "& .MuiSlider-thumb.Mui-active": {
+                },
+
+                "& .MuiSlider-thumb": {
+                  width: 0,
+                  height: 0,
+                  transition: "0.2s",
+                },
+                "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible":
+                  {
                     boxShadow: "none",
                   },
-                  "& .MuiSlider-track": {
-                    cursor: "default",
+                "& .MuiSlider-thumb.Mui-active": {
+                  boxShadow: "none",
+                },
+                "& .MuiSlider-track": {
+                  cursor: "default",
+                },
+              }}
+            />
+            <div className={styles.elementsGroup}>
+              <div className={styles.elements}>
+                {play ? (
+                  <PauseIcon
+                    onClick={() => setPlay(false)}
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                  />
+                ) : (
+                  <PlayArrowIcon
+                    onClick={() => setPlay(true)}
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                  />
+                )}
+                <Stack spacing={2} direction="row" alignItems="center">
+                  <VolumeDown />
+                  <Slider
+                    aria-label="Volume"
+                    max={100}
+                    value={volume * 100}
+                    onChange={(e: any) => setVolume(e.target.value / 100)}
+                    sx={{
+                      color: "#fff",
+                      opacity: "0.5",
+                      width: "50px",
+                      cursor: "pointer",
+
+                      ":hover": {
+                        opacity: 1,
+                        "& .MuiSlider-thumb": {
+                          width: "10px",
+                          height: "10px",
+                        },
+
+                        "& .MuiSlider-track": {
+                          cursor: "pointer",
+                        },
+                      },
+
+                      "& .MuiSlider-thumb": {
+                        width: 0,
+                        height: 0,
+                        transition: "0.2s",
+                      },
+                      "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible":
+                        {
+                          boxShadow: "none",
+                        },
+                      "& .MuiSlider-thumb.Mui-active": {
+                        boxShadow: "none",
+                      },
+                      "& .MuiSlider-track": {
+                        cursor: "default",
+                      },
+                    }}
+                  />
+                  <VolumeUp />
+                </Stack>
+              </div>
+              <FullscreenIcon
+                sx={{
+                  cursor: "pointer",
+                  ":hover": {
+                    transform: "scale(1.2)",
                   },
                 }}
+                onClick={() => handleToFullScreen(containerRef)}
               />
-              <VolumeUp />
-            </Stack>
+            </div>
           </div>
-          <FullscreenIcon
-            sx={{
-              cursor: "pointer",
-              ":hover": {
-                transform: "scale(1.2)",
-              },
-            }}
-            onClick={() => handleToFullScreen()}
-          />
-        </div>
+        )}
+        {props.children}
       </div>
-      {children}
     </div>
   );
 };
