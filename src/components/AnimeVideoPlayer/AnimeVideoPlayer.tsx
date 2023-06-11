@@ -1,7 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
 
-// Styles
 import styles from "./AnimeVideoPlayer.module.scss";
 
 // Components
@@ -9,7 +8,7 @@ import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 
 // Types
-import { OnProgressProps } from "react-player/base";
+import { IVideoPlayerProps } from "../../types/componentTypes";
 
 // Icons
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
@@ -21,17 +20,6 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
-
-interface IVideoPlayerProps {
-  url: string;
-  className?: string;
-  previewImage?: string;
-  onPlay: (e: boolean) => void;
-  children: React.ReactNode;
-  onChangeProgress: (e: string | number) => void;
-  progress: number;
-  onProgress?: (e: OnProgressProps) => void;
-}
 
 const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   const [play, setPlay] = React.useState<boolean>(false);
