@@ -9,6 +9,16 @@
 }
 
 .container {
+  .controlGroup {
+    opacity: 1;
+    transition: 0.5s;
+  }
+
+  .controlGroupDisabled {
+    opacity: 0;
+    transition: 0.5s;
+  }
+
   .controlPanel {
     position: absolute;
     display: flex;
@@ -36,6 +46,7 @@
     .elementsGroup {
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
   }
 
@@ -109,7 +120,7 @@
       transform: translateX(-50%);
       width: 90%;
     }
-    
+
     &:fullscreen {
       .controlPanel {
         left: 50%;
