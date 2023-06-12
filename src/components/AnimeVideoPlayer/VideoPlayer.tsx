@@ -1,7 +1,7 @@
 import React from "react";
 import ReactPlayer from "react-player";
 
-import styles from "./AnimeVideoPlayer.module.scss";
+import styles from "./VideoPlayer.module.scss";
 
 // Components
 import Slider from "@mui/material/Slider";
@@ -21,7 +21,7 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
 
-const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
+const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   const [play, setPlay] = React.useState<boolean>(false);
   const [firstPlay, setFirstPlay] = React.useState(true);
   const [rewind, setRewind] = React.useState(0);
@@ -34,6 +34,7 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
 
   const playerRef = React.useRef<ReactPlayer | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const changeProgress = React.useCallback(() => {
     if (
@@ -48,8 +49,19 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
     setDuration(duration);
   };
 
+  const handleMouseMove = () => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+    timeoutId.current = setTimeout(() => {
+      setVisibilePanel(false);
+    }, 1000);
+
+    setVisibilePanel(true);
+  };
+
   React.useEffect(() => {
-    const handleSpace = (event: KeyboardEvent) => {
+    const handleKey = (event: KeyboardEvent) => {
       switch (event.key) {
         case " ": {
           setFirstPlay(false);
@@ -80,10 +92,10 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
       }
     };
 
-    document.addEventListener("keydown", handleSpace);
+    document.addEventListener("keydown", handleKey);
 
     return () => {
-      document.removeEventListener("keydown", handleSpace);
+      document.removeEventListener("keydown", handleKey);
     };
   }, []);
 
@@ -103,13 +115,28 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
     setIsSupportedFullSreen(isSupported);
   }, []);
 
+  React.useEffect(() => {
+    if (play) {
+      setVisibilePanel(false);
+    }
+    if (!play) {
+      setVisibilePanel(true);
+    }
+  }, [play]);
+
   return (
     <div
-      style={{ position: "relative", width: "100%" }}
+      style={{
+        position: "relative",
+        width: "100%",
+      }}
       ref={containerRef}
-      className={styles.container}
+      className={`${styles.container} ${
+        !visiblePanel ? styles.disabledContainer : ""
+      }`}
       onMouseLeave={() => setVisibilePanel(false)}
       onMouseEnter={() => setVisibilePanel(true)}
+      onMouseMove={handleMouseMove}
     >
       {firstPlay && (
         <div
@@ -281,4 +308,4 @@ const AnimeVideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   );
 };
 
-export default AnimeVideoPlayer;
+export default VideoPlayer;

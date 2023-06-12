@@ -41,3 +41,4 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
     document.exitFullscreen();
   }
 }
+
