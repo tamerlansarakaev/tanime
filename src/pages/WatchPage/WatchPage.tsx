@@ -7,7 +7,7 @@ import { IAnime } from "../../types";
 import { deleteComma, checkGenres } from "../../utils";
 
 // Components
-import VideoPlayer from "../../components/AnimeVideoPlayer/VideoPlayer";
+import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 import Select from "../../components/UI/Select/Select";
 
 // Styles

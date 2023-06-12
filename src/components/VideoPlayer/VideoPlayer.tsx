@@ -50,12 +50,13 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   };
 
   const handleMouseMove = () => {
+    if (!play) return;
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
     timeoutId.current = setTimeout(() => {
       setVisibilePanel(false);
-    }, 1000);
+    }, 4000);
 
     setVisibilePanel(true);
   };
@@ -117,7 +118,9 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
 
   React.useEffect(() => {
     if (play) {
-      setVisibilePanel(false);
+      setTimeout(() => {
+        setVisibilePanel(false);
+      }, 3000);
     }
     if (!play) {
       setVisibilePanel(true);
@@ -293,6 +296,8 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
               <FullscreenIcon
                 sx={{
                   cursor: "pointer",
+                  transition: "0.5s",
+
                   ":hover": {
                     transform: "scale(1.2)",
                   },
