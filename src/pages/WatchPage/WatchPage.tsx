@@ -7,7 +7,7 @@ import { IAnime } from "../../types";
 import { deleteComma, checkGenres } from "../../utils";
 
 // Components
-import AnimeVideoPlayer from "../../components/AnimeVideoPlayer/AnimeVideoPlayer";
+import VideoPlayer from "../../components/AnimeVideoPlayer/VideoPlayer";
 import Select from "../../components/UI/Select/Select";
 
 // Styles
@@ -75,7 +75,7 @@ const WatchPage = () => {
           </div>
           <div className={styles.videoPlayerContainer}>
             {currentAnime.episodes && (
-              <AnimeVideoPlayer
+              <VideoPlayer
                 className={styles.videoPlayer}
                 onPlay={(status) => setPlay(status)}
                 onChangeProgress={(value) => {
@@ -138,7 +138,7 @@ const WatchPage = () => {
                     />
                   </div>
                 )}
-              </AnimeVideoPlayer>
+              </VideoPlayer>
             )}
           </div>
         </>
