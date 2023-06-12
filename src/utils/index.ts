@@ -36,9 +36,9 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
   const container = ref.current;
   if (!validate) {
     container.requestFullscreen();
+    screen.orientation.lock("landscape");
   }
   if (validate) {
     document.exitFullscreen();
   }
 }
-
