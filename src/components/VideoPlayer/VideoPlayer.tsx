@@ -160,28 +160,37 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
         className={props.className}
         onDoubleClick={() => handleToFullScreen(containerRef)}
       >
-        <ReactPlayer
-          url={props.url}
-          controls={!isSupportedFullScreen}
-          ref={playerRef}
-          playing={play}
-          volume={volume}
-          onDuration={handleLoadedMetadata}
-          onEnded={() => {
-            setRewind(0);
-          }}
-          onPlay={() => props.onPlay(true)}
-          onClick={() => {
-            setPlay((prev) => !prev);
-          }}
-          progress={props.progress}
-          progressInterval={1000}
-          onPause={() => setPlay(false)}
-          onProgress={(e) => {
-            props.onProgress && props.onProgress(e);
-            setCurrentPlayTime(e.playedSeconds);
-          }}
-        />
+        {props.url ? (
+          <ReactPlayer
+            url={props.url}
+            controls={!isSupportedFullScreen}
+            ref={playerRef}
+            playing={play}
+            volume={volume}
+            onDuration={handleLoadedMetadata}
+            onEnded={() => {
+              setRewind(0);
+            }}
+            onPlay={() => props.onPlay(true)}
+            onClick={() => {
+              setPlay((prev) => !prev);
+            }}
+            progress={props.progress}
+            progressInterval={1000}
+            onPause={() => setPlay(false)}
+            onProgress={(e) => {
+              props.onProgress && props.onProgress(e);
+              setCurrentPlayTime(e.playedSeconds);
+            }}
+          />
+        ) : (
+          <div
+            className={styles.videoNotSupported}
+            onLoad={() => setVisibilePanel(true)}
+          >
+            <span>Видео не доступно</span>
+          </div>
+        )}
       </div>
 
       <div

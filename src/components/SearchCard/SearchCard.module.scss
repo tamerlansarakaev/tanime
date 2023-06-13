@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  color: #fff;
+  list-style-type: none;
+  outline: none;
+  font-weight: 500;
+  transition: 0.5s;
+  text-decoration: none;
+
+  &:hover {
+    color: rgb(0, 0, 0);
+  }
+}

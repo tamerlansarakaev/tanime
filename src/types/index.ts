@@ -3,9 +3,9 @@ export type AnimeEpisode = {
   episode: number;
   previewImage: string | null;
   video: {
-    fhd: string;
-    hd: string;
-    sd: string;
+    fhd: string | null;
+    hd: string | null;
+    sd: string | null;
   };
 };
 
@@ -25,9 +25,9 @@ export interface IEpisode {
   name: string;
   preview: string;
   hls: {
-    fhd: string;
-    hd: string;
-    sd: string;
+    fhd: string | null;
+    hd: string | null;
+    sd: string | null;
   };
 }
 

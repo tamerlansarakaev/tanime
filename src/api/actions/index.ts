@@ -1,4 +1,4 @@
-import { api } from "..";
+import { api } from "../index";
 import { IAnimeResponse } from "../../types";
 import Anime from "../Anime";
 
@@ -33,7 +33,11 @@ class ApiService {
       const response = await api
         .post("/search", { name: text.toLowerCase() })
         .then((data) => data.data);
-      return response;
+      const resultData = response.map((anime: IAnimeResponse) => {
+        if (!anime.player.list) return;
+        return new Anime({ ...anime }).details;
+      });
+      return resultData;
     } catch (error) {
       return error;
     }

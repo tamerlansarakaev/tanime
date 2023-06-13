@@ -1,14 +1,9 @@
 import React from "react";
 
 import { NavLink } from "react-router-dom";
-import Input from "@mui/material/Input";
-import { ThemeProvider } from "@mui/material";
-
-import ApiService from "../../api/actions/index";
 
 import styles from "./Header.module.scss";
-import { debounce } from "@mui/material";
-import { inputTheme } from "../../themeList";
+import Search from "../Search/Search";
 
 interface IHeader {
   logoTitle: string;
@@ -19,13 +14,6 @@ interface IHeader {
 }
 
 const Header = ({ logoTitle, links }: IHeader) => {
-  const searchForName = debounce(async (value) => {
-    if (value) {
-      const response = await ApiService.getAnimeFromSearch(value);
-      return response;
-    }
-  }, 1000);
-
   return (
     <header className={styles.header}>
       <p className={styles.logo}>
@@ -41,12 +29,7 @@ const Header = ({ logoTitle, links }: IHeader) => {
             ))}
         </ul>
       </nav>
-      <ThemeProvider theme={inputTheme}>
-        <Input
-          disableUnderline
-          onChange={(e) => searchForName(e.target.value)}
-        />
-      </ThemeProvider>
+      <Search />
     </header>
   );
 };

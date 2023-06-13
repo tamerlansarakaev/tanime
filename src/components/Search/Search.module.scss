@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+
+  .listContainer {
+    display: flex;
+    flex-direction: column;
+    max-height: 200px;
+    overflow-y: auto;
+    top: 100%;
+    gap: 10px;
+    position: absolute;
+    background: #d43333d4;
+    z-index: 10;
+    opacity: 1;
+    transition: 0.5s;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+    box-sizing: border-box;
+  }
+
+  .listDisabled {
+    opacity: 0;
+  }
+}
+
+
+@media screen and (max-width: 425px) {
+  .container {
+    max-width: 200px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .container {
+    max-width: 150px;
+  }
+}

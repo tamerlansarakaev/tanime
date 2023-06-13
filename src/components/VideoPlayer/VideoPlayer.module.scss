@@ -9,6 +9,17 @@
 }
 
 .container {
+  .videoNotSupported {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 350px;
+
+    span {
+      font-size: 20px;
+    }
+  }
+
   .controlGroup {
     opacity: 1;
     transition: 0.5s;

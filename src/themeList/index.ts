@@ -9,9 +9,9 @@ export const inputTheme = createTheme({
         },
         root: {
           borderRadius: "8px",
-          background: "#000",
+          border: "3px solid #ff494975",
           color: "#fff",
-          padding: "5px 10px",
+          padding: "6px 35px 6px 10px",
         },
       },
     },
