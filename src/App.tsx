@@ -19,6 +19,7 @@ import { IAnime } from "./types";
 // Styles
 import "./App.css";
 import "./defaultStyles/index.scss";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -40,6 +41,7 @@ function App() {
           <Routes>
             <Route element={<HomePage />} path="/" />
             <Route element={<WatchPage />} path="/anime/:name" />
+            <Route element={<SearchPage />} path="/anime/search/:value" />
           </Routes>
         </BrowserRouter>
       </div>

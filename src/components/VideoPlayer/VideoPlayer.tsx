@@ -21,7 +21,7 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
 
-const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
+const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
   const [play, setPlay] = React.useState<boolean>(false);
   const [firstPlay, setFirstPlay] = React.useState(true);
   const [rewind, setRewind] = React.useState(0);
@@ -39,6 +39,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   const changeProgress = React.useCallback(() => {
     if (
       playerRef.current &&
+      duration &&
       playerRef.current.getCurrentTime() !== props.progress
     ) {
       playerRef.current.seekTo(props.progress);
@@ -69,13 +70,10 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
           setPlay((prev) => !prev);
           return;
         }
-        case "f": {
-          handleToFullScreen(containerRef);
-          return;
-        }
         case "ArrowRight": {
           if (
             playerRef.current &&
+            duration &&
             playerRef.current.getCurrentTime() !== props.progress
           ) {
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
@@ -85,6 +83,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
         case "ArrowLeft": {
           if (
             playerRef.current &&
+            duration &&
             playerRef.current.getCurrentTime() !== props.progress
           ) {
             playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
@@ -103,7 +102,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   React.useEffect(() => {
     changeProgress();
 
-    if (!rewind && playerRef.current) {
+    if (!rewind && playerRef.current && duration) {
       playerRef.current.seekTo(0);
     }
   }, [props.url, rewind]);
@@ -117,11 +116,6 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
   }, []);
 
   React.useEffect(() => {
-    if (play) {
-      setTimeout(() => {
-        setVisibilePanel(false);
-      }, 3000);
-    }
     if (!play) {
       setVisibilePanel(true);
     }
@@ -137,8 +131,6 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = (props) => {
       className={`${styles.container} ${
         !visiblePanel ? styles.disabledContainer : ""
       }`}
-      onMouseLeave={() => setVisibilePanel(false)}
-      onMouseEnter={() => setVisibilePanel(true)}
       onMouseMove={handleMouseMove}
     >
       {firstPlay && (

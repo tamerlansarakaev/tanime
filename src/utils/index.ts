@@ -36,9 +36,21 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
   if (!ref || !ref.current) return;
   const validate = document.fullscreenElement ? true : false;
   const container = ref.current;
-  if (!validate) {
+
+  if (
+    !validate &&
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
     container.requestFullscreen();
     screen.orientation.lock("landscape");
+    return;
+  }
+
+  if (!validate) {
+    container.requestFullscreen();
+    return;
   }
   if (validate) {
     document.exitFullscreen();
