@@ -4,7 +4,7 @@ import { IAnime } from "../../types";
 interface IDataReducer {
   animeList: IAnime[];
   type?: string;
-  page: number;
+  page?: number;
 }
 
 const initialState: IDataReducer = {

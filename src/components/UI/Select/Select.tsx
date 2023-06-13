@@ -3,15 +3,25 @@ import React from "react";
 import styles from "./Select.module.scss";
 
 import SwitchIcon from "./icons/swap.svg";
+import { AnimeEpisode } from "../../../types";
 
 type Props = {
   value: string | number;
   onClick?: (event: string | number) => void;
   elementvalueList: Array<string | number>;
+  title?: string | number;
+  episodeList?: AnimeEpisode[];
   type?: "quality" | "episode";
 };
 
-const Select = ({ value, onClick, elementvalueList, type }: Props) => {
+const Select = ({
+  episodeList,
+  value,
+  onClick,
+  elementvalueList,
+  title,
+  type,
+}: Props) => {
   const [status, setStatus] = React.useState<boolean>(false);
   const MOUSE_LEAVE_TIMEOUT = React.useRef<ReturnType<
     typeof setTimeout
@@ -38,7 +48,7 @@ const Select = ({ value, onClick, elementvalueList, type }: Props) => {
     >
       <div style={{ display: "flex", boxSizing: "border-box" }}>
         <span className={styles.text}>
-          {value}
+          {title ? title : value}
           {checkType()}
         </span>
         <img
@@ -48,22 +58,28 @@ const Select = ({ value, onClick, elementvalueList, type }: Props) => {
       </div>
       {status && (
         <ul className={styles.list}>
-          {elementvalueList.map((state, i) => (
-            <li
-              className={`${styles.text} ${value === state ? "active" : ""}`}
-              key={i}
-              onClick={(e) => {
-                e.stopPropagation();
+          {elementvalueList.map((state, i) => {
+            return (
+              <li
+                className={`${styles.text} ${value === state ? "active" : ""}`}
+                key={i}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onClick && type === "quality") {
+                    onClick(state);
+                    return;
+                  }
 
-                if (onClick) {
-                  onClick(state);
-                }
-              }}
-            >
-              {state}
-              {checkType()}
-            </li>
-          ))}
+                  if (onClick && type !== "quality") {
+                    onClick(i + 1);
+                  }
+                }}
+              >
+                {episodeList ? episodeList[i].episode : state}
+                {checkType()}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

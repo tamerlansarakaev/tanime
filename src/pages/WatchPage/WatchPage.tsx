@@ -25,13 +25,16 @@ const WatchPage = () => {
   const [currentAnime, setCurrentAnime] = React.useState<IAnime>();
   const { name } = useParams();
   const [play, setPlay] = React.useState<boolean>(false);
-  const [fullScreen, setFullScreen] = React.useState(false);
   const [settingEpisode, setSettingEpisode] = React.useState<ISettingEpisode>({
-    quality: "1080",
+    quality: "720",
     episode: 1,
     progress: 0,
   });
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
+  const videoUrl =
+    (currentAnime &&
+      currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
+    "";
 
   function setQuality() {
     if (!currentAnime) return "hd";
@@ -55,7 +58,7 @@ const WatchPage = () => {
     const findAnime = animeList.find((state) => state.code === name);
     if (!findAnime?.name) return;
     setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
-  }, [animeList]);
+  }, [animeList, name]);
 
   return (
     <div className={styles.container}>
@@ -96,11 +99,7 @@ const WatchPage = () => {
                     });
                   }
                 }}
-                url={
-                  currentAnime.episodes[settingEpisode.episode - 1]?.video[
-                    setQuality()
-                  ]
-                }
+                url={videoUrl}
                 previewImage={
                   currentAnime.episodes[settingEpisode.episode - 1]
                     ?.previewImage ||
@@ -111,11 +110,14 @@ const WatchPage = () => {
                 {play && (
                   <div className={styles.selectContainer}>
                     <Select
-                      value={settingEpisode.episode}
+                      title={
+                        currentAnime.episodes[settingEpisode.episode - 1]
+                          .episode
+                      }
+                      value={settingEpisode.episode - 1}
                       type="episode"
-                      elementvalueList={currentAnime.episodes.map(
-                        (state) => state.episode
-                      )}
+                      elementvalueList={currentAnime.episodes.map((_, i) => i)}
+                      episodeList={currentAnime.episodes}
                       onClick={(value) =>
                         setSettingEpisode({
                           ...settingEpisode,
@@ -127,6 +129,7 @@ const WatchPage = () => {
 
                     <Select
                       value={settingEpisode.quality}
+                      title={settingEpisode.quality}
                       elementvalueList={qualityList}
                       type="quality"
                       onClick={(value) => {

@@ -1,3 +1,5 @@
+import { IAnime } from "../types";
+
 export function checkGenres(genres: Array<string>) {
   if (!genres) return;
   let comma = "";
@@ -41,4 +43,23 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
   if (validate) {
     document.exitFullscreen();
   }
+}
+
+export function sortWords(array: Array<IAnime>, word: string) {
+  const symbols = /[, :.]/g;
+  const replacedText = word.replace(symbols, "").trim().toLowerCase();
+  const sortArray = array.sort((a, b) => {
+    if (a.name[0].toLowerCase() === replacedText[0]) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return sortArray;
+}
+
+export function replaceTextForSymbols(text: string) {
+  const symbols = /[, .:$%^&*)#@!;'"]/g;
+  const replacedText = text.replace(symbols, "");
+  return replacedText;
 }

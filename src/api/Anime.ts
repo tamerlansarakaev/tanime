@@ -30,9 +30,9 @@ class Anime implements IAnime {
         ...state,
         previewImage: state.preview ? defaultURL + state.preview : null,
         video: {
-          fhd: videoURL + state.hls.fhd,
-          hd: videoURL + state.hls.hd,
-          sd: videoURL + state.hls.sd,
+          fhd: state.hls.fhd ? videoURL + state.hls.fhd : null,
+          hd: state.hls.hd ? videoURL + state.hls.hd : null,
+          sd: state.hls.sd ? videoURL + state.hls.sd : null,
         },
       };
     });
