@@ -30,6 +30,7 @@ const HomePage = () => {
   const [status, setStatus] = React.useState(false);
 
   async function handleClickMore() {
+    if (!page) return;
     setStatus(true);
     const newPage = page + 1;
     const newAnimeList = await ApiService.getAnimeFromPage(newPage);

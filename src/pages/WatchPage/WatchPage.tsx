@@ -36,6 +36,14 @@ const WatchPage = () => {
       currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
     "";
 
+  React.useEffect(() => {
+    setSettingEpisode({
+      quality: "720",
+      episode: 1,
+      progress: 0,
+    });
+  }, [name]);
+
   function setQuality() {
     if (!currentAnime) return "hd";
     switch (settingEpisode.quality) {
