@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import styles from "./Header.module.scss";
 import Search from "../Search/Search";
@@ -14,6 +14,8 @@ interface IHeader {
 }
 
 const Header = ({ logoTitle, links }: IHeader) => {
+  const navigate = useNavigate();
+
   return (
     <header className={styles.header}>
       <p className={styles.logo}>
@@ -29,7 +31,7 @@ const Header = ({ logoTitle, links }: IHeader) => {
             ))}
         </ul>
       </nav>
-      <Search />
+      <Search onSubmit={() => navigate("/anime/search/")} />
     </header>
   );
 };

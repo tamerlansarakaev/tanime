@@ -60,7 +60,8 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
 export function sortWords(array: Array<IAnime>, word: string) {
   const symbols = /[, :.]/g;
   const replacedText = word.replace(symbols, "").trim().toLowerCase();
-  const sortArray = array.sort((a, b) => {
+  const newArray = array.map((state) => state);
+  const sortArray = newArray.sort((a, b) => {
     if (a.name[0].toLowerCase() === replacedText[0]) {
       return -1;
     } else {
@@ -73,5 +74,11 @@ export function sortWords(array: Array<IAnime>, word: string) {
 export function replaceTextForSymbols(text: string) {
   const symbols = /[, .:$%^&*)#@!;'"]/g;
   const replacedText = text.replace(symbols, "");
+  return replacedText;
+}
+
+export function updatedReplaceForSymbols(text: string) {
+  const symbolsAndNumbers = /[ ,/=!$#@^*)(%*$#_+)]/g;
+  const replacedText = text.replace(symbolsAndNumbers, "-");
   return replacedText;
 }

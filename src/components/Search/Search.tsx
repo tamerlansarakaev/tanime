@@ -14,19 +14,20 @@ import styles from "./Search.module.scss";
 
 import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
-import { loadAnime } from "../../redux/reducers/dataReducer";
+import { loadAnime, searchAnimeList } from "../../redux/reducers/dataReducer";
 import SearchCard from "../SearchCard/SearchCard";
 import { replaceTextForSymbols, sortWords } from "../../utils";
 
 type Props = {
   onValue?: (e: string) => void;
+  onSubmit?: (e: string) => void;
 };
 
-const Search = ({ onValue }: Props) => {
+const Search = ({ onValue, onSubmit }: Props) => {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [foundList, setFoundList] = React.useState<IAnime[]>([]);
-  const [value, setValue] = React.useState<string>('');
+  const [value, setValue] = React.useState<string>("");
   const [focus, setFocus] = React.useState(false);
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -38,6 +39,8 @@ const Search = ({ onValue }: Props) => {
     if (!newValue.trim().length || !value) return;
     const resultValue = value.trim().toLowerCase();
     timeoutId.current = setTimeout(async () => {
+      dispatch(searchAnimeList({ animeList: animeList, searchAnimeList: [] }));
+
       const findForValue = animeList.filter((state) => {
         const replacedStateText = replaceTextForSymbols(state.name);
         const replaceValue = replaceTextForSymbols(value);
@@ -51,29 +54,37 @@ const Search = ({ onValue }: Props) => {
         );
         const sortedArray = sortWords(response, resultValue);
         setFoundList(sortedArray);
+        const resultArray = sortedArray.filter((newItem) => {
+          const validate = animeList.findIndex(
+            (oldItem) => oldItem.name === newItem.name
+          );
+          return validate === -1;
+        });
+        dispatch(
+          searchAnimeList({
+            animeList: [...animeList, ...resultArray],
+            searchAnimeList: sortedArray,
+          })
+        );
+
         return;
       }
       const sortedArray = sortWords(findForValue, resultValue);
       setFoundList(sortedArray);
-    }, 1000);
-  };
-
-  React.useEffect(() => {
-    if (foundList.length && value) {
-      const resultValue = value.trim().toLowerCase();
-
-      const resultArray = foundList.filter((newItem) => {
+      const resultArray = sortedArray.filter((newItem) => {
         const validate = animeList.findIndex(
           (oldItem) => oldItem.name === newItem.name
         );
         return validate === -1;
       });
-
-      if (resultArray.length) {
-        dispatch(loadAnime({ animeList: [...animeList, ...resultArray] }));
-      }
-    }
-  }, [foundList]);
+      dispatch(
+        searchAnimeList({
+          animeList: [...animeList, ...resultArray],
+          searchAnimeList: sortedArray,
+        })
+      );
+    }, 1000);
+  };
 
   return (
     <ThemeProvider theme={inputTheme}>
@@ -82,26 +93,50 @@ const Search = ({ onValue }: Props) => {
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
       >
-        <Input
-          disableUnderline
-          placeholder={"Название аниме"}
-          value={value}
-          onChange={(e) => {
-            searchForName(e.target.value);
-            setValue(e.target.value);
-            if (!onValue) return;
-            onValue(e.target.value);
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (value.trim().length && onSubmit) {
+              onSubmit(value);
+            }
           }}
-        />
-        <SearchIcon
-          sx={{
-            position: "absolute",
-            right: "10px",
-            zIndex: "10",
-            top: "50%",
-            transform: "translateY(-50%)",
-          }}
-        />
+        >
+          <Input
+            disableUnderline
+            placeholder={"Название аниме"}
+            value={value}
+            onChange={(e) => {
+              searchForName(e.target.value);
+              setValue(e.target.value);
+              if (!onValue) return;
+              onValue(e.target.value);
+            }}
+          />
+          <button
+            type="submit"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              right: "10px",
+              background: "none",
+              border: "none",
+              zIndex: "10",
+              transform: "translateY(-50%)",
+              top: "50%",
+            }}
+          >
+            <SearchIcon
+              sx={{
+                color: "#fff",
+                transition: "0.5s",
+                cursor: value.trim().length ? "pointer" : "auto",
+                opacity: value.trim().length ? 1 : "0.5",
+              }}
+            />
+          </button>
+        </form>
         {foundList.length ? (
           <div
             className={`${styles.listContainer} ${
