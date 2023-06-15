@@ -7,13 +7,13 @@ interface IMain {
   children?: React.ReactNode;
 }
 
-const Main = React.forwardRef(({ title, children }: IMain) => {
+const Main = ({ title, children }: IMain) => {
   return (
     <div className={styles.main}>
       <h1 className={styles.title}>{title}</h1>
       {children}
     </div>
   );
-});
+};
 
 export default Main;

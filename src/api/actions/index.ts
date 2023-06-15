@@ -45,8 +45,7 @@ class ApiService {
 
   async getAnimeFromSearch(text: string) {
     try {
-      const resultText = text.toLowerCase().replace(/[ ]/g, "-");
-      console.log(resultText);
+      const resultText = text.replace(/[ ]/g, "-");
       const encodeText = encodeURIComponent(resultText);
       const response = await api
         .get(`/search/${encodeText}`)
