@@ -1,4 +1,3 @@
-import React from "react";
 import { IAnime } from "../../types";
 
 import styles from "./SearchCard.module.scss";
