@@ -34,7 +34,7 @@ function App() {
 
         try {
           const loadAnimeForServer = await ApiService.loadAllAnimeForServer();
-          setModalStatus(true)
+          setModalStatus(false)
           return loadAnimeForServer;
         } catch (error) {
           return error;
