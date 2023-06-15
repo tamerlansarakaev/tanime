@@ -31,10 +31,11 @@ function App() {
     if (!animeList.length) {
       ApiService.getAllAnime().then(async (data) => {
         dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
-        setModalStatus(false);
+
         try {
-          const loadAnimeForServer = await ApiService.loadAllAnimeForServer();
-          return loadAnimeForServer;
+          ApiService.loadAllAnimeForServer().then(() => {
+            setModalStatus(false);
+          });
         } catch (error) {
           return error;
         }
