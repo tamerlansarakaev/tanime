@@ -15,7 +15,7 @@ import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
 import SearchCard from "../SearchCard/SearchCard";
-import { replaceTextForSymbols, sortWords } from "../../utils";
+import { sortWords } from "../../utils";
 
 type Props = {
   onValue?: (e: string) => void;
@@ -38,16 +38,16 @@ const Search = ({ onValue, onSubmit }: Props) => {
     if (!newValue.trim().length || !value) return;
     const resultValue = value.trim().toLowerCase();
     timeoutId.current = setTimeout(async () => {
-      const findForValue = animeList.filter((state) => {
-        const replacedStateText = replaceTextForSymbols(
-          state.name
-        ).toLowerCase();
-        const replaceValue = replaceTextForSymbols(value).toLowerCase();
-        console.log(replaceValue);
-        const findForText = replacedStateText.indexOf(replaceValue);
+      // const findForValue = animeList.filter((state) => {
+      //   const replacedStateText = replaceTextForSymbols(
+      //     state.name
+      //   ).toLowerCase();
+      //   const replaceValue = replaceTextForSymbols(value).toLowerCase();
+      //   console.log(replaceValue);
+      //   const findForText = replacedStateText.indexOf(replaceValue);
 
-        return findForText !== -1;
-      });
+      //   return findForText !== -1;
+      // });
       const response = await ApiService.getAnimeFromSearch(
         newValue.toLowerCase().trim()
       );
