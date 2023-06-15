@@ -7,6 +7,7 @@ import ApiService from "./api/actions/index";
 // Components
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
+import { Modal } from "@mui/material";
 
 // Pages
 import HomePage from "./pages/HomePage/HomePage";
@@ -24,11 +25,19 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 function App() {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
+  const [modalStatus, setModalStatus] = React.useState(true);
 
   React.useEffect(() => {
     if (!animeList.length) {
-      ApiService.getAllAnime().then((data) => {
+      ApiService.getAllAnime().then(async (data) => {
         dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
+
+        try {
+          const loadAnimeForServer = await ApiService.loadAllAnimeForServer();
+          return setModalStatus(false);
+        } catch (error) {
+          return error;
+        }
       });
     }
   }, []);
@@ -45,6 +54,22 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      <Modal
+        open={modalStatus}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          border: "none",
+          color: "#fff",
+
+          "& .MuiModal-backdrop": {
+            background: "#000000c4",
+          },
+        }}
+      >
+        <h1 className="LoadingModalTitle">Loading...</h1>
+      </Modal>
     </div>
   );
 }

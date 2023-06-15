@@ -1,6 +1,5 @@
 import React from "react";
 import BackgroundImage from "../../assets/images/background.webp";
-import { useParams } from "react-router-dom";
 
 import styles from "./SearchPage.module.scss";
 
