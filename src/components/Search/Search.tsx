@@ -15,7 +15,7 @@ import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
 import SearchCard from "../SearchCard/SearchCard";
-import { replaceTextForSymbols, sortWords } from "../../utils";
+import { sortWords } from "../../utils";
 
 type Props = {
   onValue?: (e: string) => void;
