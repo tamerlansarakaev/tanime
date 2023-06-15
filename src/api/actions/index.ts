@@ -28,10 +28,28 @@ class ApiService {
     }
   }
 
+  // async getAnimeFromSearch(text: string) {
+  //   try {
+  //     const response = await api
+  //       .post("/search", { name: text.toLowerCase() })
+  //       .then((data) => data.data);
+  //     const resultData = response.map((anime: IAnimeResponse) => {
+  //       if (!anime.player.list) return;
+  //       return new Anime({ ...anime }).details;
+  //     });
+  //     return resultData;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
+
   async getAnimeFromSearch(text: string) {
     try {
+      const resultText = text.toLowerCase().replace(/[ ]/g, "-");
+      console.log(resultText);
+      const encodeText = encodeURIComponent(resultText);
       const response = await api
-        .post("/search", { name: text.toLowerCase() })
+        .get(`/search/${encodeText}`)
         .then((data) => data.data);
       const resultData = response.map((anime: IAnimeResponse) => {
         if (!anime.player.list) return;
@@ -40,6 +58,15 @@ class ApiService {
       return resultData;
     } catch (error) {
       return error;
+    }
+  }
+
+  async loadAllAnimeForServer() {
+    try {
+      const response = await api.get(`/load`);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 }
