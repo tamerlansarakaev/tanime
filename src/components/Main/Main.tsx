@@ -7,7 +7,7 @@ interface IMain {
   children?: React.ReactNode;
 }
 
-const Main = React.forwardRef(({ title, children }: IMain, ref) => {
+const Main = React.forwardRef(({ title, children }: IMain) => {
   return (
     <div className={styles.main}>
       <h1 className={styles.title}>{title}</h1>

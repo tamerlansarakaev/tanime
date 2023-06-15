@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/config";
 import { inputTheme } from "../../themeList";
-import { debounce } from "lodash-es";
 
 // Components
 import { Input, ThemeProvider } from "@mui/material";
@@ -14,7 +13,7 @@ import styles from "./Search.module.scss";
 
 import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
-import { loadAnime, searchAnimeList } from "../../redux/reducers/dataReducer";
+import { searchAnimeList } from "../../redux/reducers/dataReducer";
 import SearchCard from "../SearchCard/SearchCard";
 import { replaceTextForSymbols, sortWords } from "../../utils";
 
