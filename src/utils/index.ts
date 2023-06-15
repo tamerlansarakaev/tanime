@@ -5,12 +5,13 @@ export function checkGenres(genres: Array<string>) {
   let comma = "";
   const sliceArray = genres.slice(-3, -1);
 
-  const isCommaList = sliceArray.map((state, i) => {
+  sliceArray.map((state, i) => {
     const isValidate = sliceArray[i + 1]
       ? (comma += `${state}, `)
       : !sliceArray[i + 1]
       ? (comma += `${state}`)
       : "";
+    return isValidate;
   });
 
   return comma;
@@ -61,7 +62,7 @@ export function sortWords(array: Array<IAnime>, word: string) {
   const symbols = /[, :.]/g;
   const replacedText = word.replace(symbols, "").trim().toLowerCase();
   const newArray = array.map((state) => state);
-  const sortArray = newArray.sort((a, b) => {
+  const sortArray = newArray.sort((a, _) => {
     if (a.name[0].toLowerCase() === replacedText[0]) {
       return -1;
     } else {
