@@ -180,7 +180,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
             className={styles.videoNotSupported}
             onLoad={() => setVisibilePanel(true)}
           >
-            <span>Видео не доступно</span>
+            <span>Видео недоступно</span>
           </div>
         )}
       </div>
