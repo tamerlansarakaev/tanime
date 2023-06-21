@@ -13,9 +13,9 @@
 ## Build With
 
 - [Vite](https://vitejs.dev)
+- [JavaScript (ES6+)](https://www.javascript.com)
 - [React 18](https://reactjs.org)
 - [Redux Toolkit](https://redux-toolkit.js.org)
 - [TS](https://www.typescriptlang.org)
 - [MUI 5](https://mui.com)
 - [React Router 6](https://reactrouter.com)
-- [JavaScript (ES6+)](https://www.javascript.com/)
