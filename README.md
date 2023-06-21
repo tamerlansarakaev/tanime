@@ -13,7 +13,7 @@
 ## Build With
 
 - [Vite](https://vitejs.dev)
-- [JavaScript (ES6+)](https://www.javascript.com)
+- [JavaScript](https://www.javascript.com)
 - [React 18](https://reactjs.org)
 - [Redux Toolkit](https://redux-toolkit.js.org)
 - [TS](https://www.typescriptlang.org)
