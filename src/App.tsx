@@ -33,11 +33,14 @@ function App() {
         dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
 
         try {
-          ApiService.loadAllAnimeForServer().then(() => {
+          ApiService.loadAllAnimeFromServer().then(() => {
             setModalStatus(false);
           });
         } catch (error) {
-          return error;
+          ApiService.loadAllAnimeFromServer().then(() => {
+            setModalStatus(false);
+          });
+          console.log(error);
         }
       });
     }

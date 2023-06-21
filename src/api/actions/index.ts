@@ -60,7 +60,7 @@ class ApiService {
     }
   }
 
-  async loadAllAnimeForServer() {
+  async loadAllAnimeFromServer() {
     try {
       const response = await api.get(`/load`);
       return response ? true : false;
