@@ -37,9 +37,6 @@ function App() {
             setModalStatus(false);
           });
         } catch (error) {
-          ApiService.loadAllAnimeFromServer().then(() => {
-            setModalStatus(false);
-          });
           console.log(error);
         }
       });
