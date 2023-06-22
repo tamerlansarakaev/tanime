@@ -64,4 +64,21 @@ h2 {
   color: #fff;
   margin: auto auto;
   outline: none;
+  text-align: center;
+}
+
+.description {
+  font-size: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+
+@media screen and (max-width:500px) {
+  .description {
+    font-size: 16px;
+  }
+
+  .loadingStatus {
+    font-size: 12px;
+  }
 }

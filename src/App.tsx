@@ -26,6 +26,7 @@ function App() {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [modalStatus, setModalStatus] = React.useState(true);
+  const [modalText, setModalText] = React.useState("");
 
   React.useEffect(() => {
     if (!animeList.length) {
@@ -33,8 +34,20 @@ function App() {
         dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
 
         try {
-          ApiService.loadAllAnimeFromServer().then(() => {
-            setModalStatus(false);
+          ApiService.getPagesLength().then((lengthPages) => {
+            let myNumber: number;
+            setModalText("Подготовка к запросу...");
+            const length = Math.ceil(lengthPages / 2);
+            ApiService.loadAllAnimeFromServer(0, length).then(() => {
+              myNumber = Math.ceil(lengthPages / 2 + 1);
+              setModalText("Обновление данных...");
+
+              ApiService.loadAllAnimeFromServer(myNumber, lengthPages).then(
+                () => {
+                  setModalStatus(false);
+                }
+              );
+            });
           });
         } catch (error) {
           console.log(error);
@@ -69,7 +82,13 @@ function App() {
           },
         }}
       >
-        <h1 className="LoadingModalTitle">Loading...</h1>
+        <div className="LoadingModalTitle">
+          <p className="description">
+            Возможна долгая загрузка проекта из-за ограниченных ресурсов
+            бесплатного хостинга.
+          </p>
+          <span className="loadingStatus">{modalText}</span>
+        </div>
       </Modal>
     </div>
   );
