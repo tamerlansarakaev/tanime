@@ -60,10 +60,19 @@ class ApiService {
     }
   }
 
-  async loadAllAnimeFromServer() {
+  async loadAllAnimeFromServer(start: number, end: number) {
     try {
-      const response = await api.get(`/load`);
+      const response = await api.get(`/load?start=${start}&end=${end}`);
       return response ? true : false;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async getPagesLength() {
+    try {
+      const response = (await api.get(`/pagesLength`)).data;
+      return response.length;
     } catch (error) {
       return false;
     }
