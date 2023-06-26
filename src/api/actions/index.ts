@@ -47,16 +47,16 @@ class ApiService {
     try {
       const resultText = text.replace(/[ ]/g, "-");
       const encodeText = encodeURIComponent(resultText);
-      const response = await api
-        .get(`/search/${encodeText}`)
-        .then((data) => data.data);
+      const response = await api.get(`/search/${encodeText}`).then((res) => {
+        return res.data;
+      });
       const resultData = response.map((anime: IAnimeResponse) => {
         if (!anime.player.list) return;
         return new Anime({ ...anime }).details;
       });
       return resultData;
     } catch (error) {
-      return error;
+      return false;
     }
   }
 

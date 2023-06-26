@@ -32,6 +32,7 @@ function App() {
     if (!animeList.length) {
       ApiService.getAllAnime().then(async (data) => {
         dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
+        setModalStatus(false);
 
         try {
           ApiService.getPagesLength().then((lengthPages) => {
@@ -42,11 +43,7 @@ function App() {
               myNumber = Math.ceil(lengthPages / 2 + 1);
               setModalText("Обновление данных...");
 
-              ApiService.loadAllAnimeFromServer(myNumber, lengthPages).then(
-                () => {
-                  setModalStatus(false);
-                }
-              );
+              ApiService.loadAllAnimeFromServer(myNumber, lengthPages);
             });
           });
         } catch (error) {
