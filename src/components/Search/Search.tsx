@@ -42,9 +42,8 @@ const Search = ({ onValue, onSubmit }: Props) => {
   }
 
   React.useEffect(() => {
-    console.log(disabledInput);
     testInWorkDataBase();
-  }, [disabledInput]);
+  }, []);
 
   const searchForName = async (newValue: string) => {
     setFoundList([]);
