@@ -4,6 +4,7 @@ import { inputTheme } from "../../themeList";
 
 // Components
 import { Input, ThemeProvider } from "@mui/material";
+import SearchCard from "../SearchCard/SearchCard";
 
 // Icons
 import SearchIcon from "@mui/icons-material/Search";
@@ -14,7 +15,6 @@ import styles from "./Search.module.scss";
 import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
-import SearchCard from "../SearchCard/SearchCard";
 import { sortWords } from "../../utils";
 
 type Props = {
@@ -27,8 +27,24 @@ const Search = ({ onValue, onSubmit }: Props) => {
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [foundList, setFoundList] = React.useState<IAnime[]>([]);
   const [value, setValue] = React.useState<string>("");
+  const [disabledInput, setDisabledInput] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  async function testInWorkDataBase() {
+    try {
+      const request = await ApiService.getAnimeFromSearch("наруто");
+      if (!request) return setDisabledInput(true);
+      return request;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  React.useEffect(() => {
+    console.log(disabledInput);
+    testInWorkDataBase();
+  }, [disabledInput]);
 
   const searchForName = async (newValue: string) => {
     setFoundList([]);
@@ -51,6 +67,7 @@ const Search = ({ onValue, onSubmit }: Props) => {
       const response = await ApiService.getAnimeFromSearch(
         newValue.toLowerCase().trim()
       );
+      if (!response.length) return [];
       const sortedArray = sortWords(response, resultValue);
       setFoundList(sortedArray);
       const resultArray = sortedArray.filter((newItem) => {
@@ -102,6 +119,7 @@ const Search = ({ onValue, onSubmit }: Props) => {
           <Input
             disableUnderline
             placeholder={"Название аниме"}
+            disabled={disabledInput}
             value={value}
             onChange={(e) => {
               setValue(e.target.value);

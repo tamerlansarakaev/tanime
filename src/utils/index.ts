@@ -59,6 +59,7 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
 }
 
 export function sortWords(array: Array<IAnime>, word: string) {
+  if (!array) return [];
   const symbols = /[, :.]/g;
   const replacedText = word.replace(symbols, "").trim().toLowerCase();
   const newArray = array.map((state) => state);
