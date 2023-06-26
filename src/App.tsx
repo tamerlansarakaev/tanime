@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "./redux/config";
 import ApiService from "./api/actions/index";
 
 // Components
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import { Modal } from "@mui/material";
 
@@ -56,12 +56,14 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <Header logoTitle="Tanime" />
-        <Routes>
-          <Route element={<HomePage />} path="/" />
-          <Route element={<WatchPage />} path="/anime/:name" />
-          <Route element={<SearchPage />} path="/anime/search/" />
-        </Routes>
+        <BrowserRouter basename="/">
+          <Header logoTitle="Tanime" />
+          <Routes>
+            <Route element={<HomePage />} path="/" />
+            <Route element={<WatchPage />} path="/anime/:name" />
+            <Route element={<SearchPage />} path="/anime/search/" />
+          </Routes>
+        </BrowserRouter>
       </div>
       <Modal
         open={modalStatus}
