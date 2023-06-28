@@ -43,7 +43,7 @@ const Search = ({ onValue, onSubmit }: Props) => {
 
   React.useEffect(() => {
     testInWorkDataBase();
-  }, []);
+  }, [animeList]);
 
   const searchForName = async (newValue: string) => {
     setFoundList([]);
