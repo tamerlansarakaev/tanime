@@ -64,7 +64,9 @@ const WatchPage = () => {
 
   React.useEffect(() => {
     const findAnime = animeList.find((state) => state.code === name);
-    if (!findAnime?.name) return;
+    if (!findAnime?.name) {
+      return;
+    }
     setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
   }, [animeList, name]);
 

@@ -33,6 +33,9 @@ const Search = ({ onValue, onSubmit }: Props) => {
 
   async function testInWorkDataBase() {
     try {
+      const getFirstAnime = await ApiService.getAnimeFromPage(1);
+      if (!getFirstAnime) return;
+
       const request = await ApiService.getAnimeFromSearch("наруто");
       if (!request) return setDisabledInput(true);
       return request;
