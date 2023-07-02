@@ -39,16 +39,30 @@ function App() {
 
   React.useEffect(() => {
     if (!animeList.length) {
-      ApiService.getAllAnime().then(async (data) => {
-        dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
-        setModalStatus(false);
-
-        try {
-          loadAllAnimeForServer();
-        } catch (error) {
+      try {
+        ApiService.getAllAnime().then(async (data) => {
+          dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
           setModalStatus(false);
-        }
-      });
+
+          try {
+            loadAllAnimeForServer();
+          } catch (error) {
+            setModalStatus(false);
+          }
+        });
+      } catch (error) {
+        ApiService.getAllAnime().then(async (data) => {
+          dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
+          setModalStatus(false);
+
+          try {
+            loadAllAnimeForServer();
+          } catch (error) {
+            setModalStatus(false);
+          }
+          return error;
+        });
+      }
     }
   }, []);
 
