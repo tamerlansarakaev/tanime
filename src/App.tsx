@@ -28,6 +28,16 @@ function App() {
   const [modalStatus, setModalStatus] = React.useState(true);
   const [modalText, setModalText] = React.useState("");
 
+  const loadAllAnimeForServer = async () => {
+    try {
+      const loadAnime = await ApiService.loadAllAnimeFromServer();
+      setModalStatus(false);
+      return loadAnime;
+    } catch (err) {
+      return err;
+    }
+  };
+
   React.useEffect(() => {
     if (!animeList.length) {
       ApiService.getAllAnime().then(async (data) => {
@@ -35,17 +45,7 @@ function App() {
         setModalStatus(false);
 
         try {
-          ApiService.getPagesLength().then((lengthPages) => {
-            let myNumber: number;
-            setModalText("Подготовка к запросу...");
-            const length = Math.ceil(lengthPages / 2);
-            ApiService.loadAllAnimeFromServer(0, length).then(() => {
-              myNumber = Math.ceil(lengthPages / 2 + 1);
-              setModalText("Обновление данных...");
-
-              ApiService.loadAllAnimeFromServer(myNumber, lengthPages);
-            });
-          });
+          loadAllAnimeForServer();
         } catch (error) {
           setModalStatus(false);
         }

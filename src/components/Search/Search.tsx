@@ -29,6 +29,8 @@ const Search = ({ onValue, onSubmit }: Props) => {
   const [value, setValue] = React.useState<string>("");
   const [disabledInput, setDisabledInput] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
+  const [statusFound, setStatusFound] = React.useState<boolean | null>(null);
+
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   async function testInWorkDataBase() {
@@ -46,57 +48,44 @@ const Search = ({ onValue, onSubmit }: Props) => {
   }, []);
 
   const searchForName = async (newValue: string) => {
+    setStatusFound(null);
     setFoundList([]);
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
+
     if (!newValue.trim().length || !value) return;
+
     const resultValue = value.trim().toLowerCase();
     timeoutId.current = setTimeout(async () => {
-      // const findForValue = animeList.filter((state) => {
-      //   const replacedStateText = replaceTextForSymbols(
-      //     state.name
-      //   ).toLowerCase();
-      //   const replaceValue = replaceTextForSymbols(value).toLowerCase();
-      //   console.log(replaceValue);
-      //   const findForText = replacedStateText.indexOf(replaceValue);
-
-      //   return findForText !== -1;
-      // });
       const response = await ApiService.getAnimeFromSearch(
         newValue.toLowerCase().trim()
       );
-      if (!response.length) return [];
+
+      if (!response.length) {
+        setStatusFound(false);
+        return;
+      }
+
+      setStatusFound(true);
+
       const sortedArray = sortWords(response, resultValue);
       setFoundList(sortedArray);
+
       const resultArray = sortedArray.filter((newItem) => {
         const validate = animeList.findIndex(
           (oldItem) => oldItem.name === newItem.name
         );
         return validate === -1;
       });
+
       dispatch(
         searchAnimeList({
           animeList: [...animeList, ...resultArray],
           searchAnimeList: sortedArray,
         })
       );
-
       return;
-      // const sortedArray = sortWords(findForValue, resultValue);
-      // setFoundList(sortedArray);
-      // const resultArray = sortedArray.filter((newItem) => {
-      //   const validate = animeList.findIndex(
-      //     (oldItem) => oldItem.name === newItem.name
-      //   );
-      //   return validate === -1;
-      // });
-      // dispatch(
-      //   searchAnimeList({
-      //     animeList: [...animeList, ...resultArray],
-      //     searchAnimeList: sortedArray,
-      //   })
-      // );
     }, 1000);
   };
 
@@ -170,6 +159,22 @@ const Search = ({ onValue, onSubmit }: Props) => {
                 />
               );
             })}
+          </div>
+        ) : value.length && statusFound !== false ? (
+          <div
+            className={`${styles.listContainer} ${
+              !focus && styles.listDisabled
+            }`}
+          >
+            Загрузка...
+          </div>
+        ) : statusFound === false ? (
+          <div
+            className={`${styles.listContainer} ${
+              !focus && styles.listDisabled
+            }`}
+          >
+            Не найдено...
           </div>
         ) : (
           ""
