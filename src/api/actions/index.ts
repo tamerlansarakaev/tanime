@@ -5,7 +5,7 @@ import Anime from "../Anime";
 class ApiService {
   async getAllAnime() {
     try {
-      const response = (await api.get("/list/last")).data;
+      const response = (await api.get("/anime/list/last")).data;
       const resultData = response.map((anime: IAnimeResponse) => {
         if (!anime.player.list) return;
         return new Anime({ ...anime }).details;
@@ -17,7 +17,7 @@ class ApiService {
   }
   async getAnimeFromPage(page: number) {
     try {
-      const response = (await api.get(`/list/${page}`)).data;
+      const response = (await api.get(`/anime/list/${page}`)).data;
       const resultData = response.map((anime: IAnimeResponse) => {
         if (!anime.player.list) return;
         return new Anime({ ...anime }).details;
@@ -47,7 +47,7 @@ class ApiService {
     try {
       const resultText = text.replace(/[ ]/g, "-");
       const encodeText = encodeURIComponent(resultText);
-      const response = await api.get(`/search/${encodeText}`).then((res) => {
+      const response = await api.get(`/anime/search/${encodeText}`).then((res) => {
         return res.data;
       });
       const resultData = response.map((anime: IAnimeResponse) => {
@@ -60,9 +60,9 @@ class ApiService {
     }
   }
 
-  async loadAllAnimeFromServer(start: number, end: number) {
+  async loadAllAnimeFromServer() {
     try {
-      const response = await api.get(`/load?start=${start}&end=${end}`);
+      const response = await api.get(`/load/anime`);
       return response ? true : false;
     } catch (error) {
       return false;
@@ -71,7 +71,7 @@ class ApiService {
 
   async getPagesLength() {
     try {
-      const response = (await api.get(`/pagesLength`)).data;
+      const response = (await api.get(`/anime/pagesLength`)).data;
       return response.length;
     } catch (error) {
       return false;
