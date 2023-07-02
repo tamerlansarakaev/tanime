@@ -1,5 +1,5 @@
 import { api } from "../index";
-import { IAnime, IAnimeResponse } from "../../types";
+import { IAnimeResponse } from "../../types";
 import Anime from "../Anime";
 
 class ApiService {
