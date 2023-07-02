@@ -29,6 +29,7 @@ const WatchPage = () => {
   const [currentAnime, setCurrentAnime] = React.useState<IAnime>();
   const { name } = useParams();
   const [play, setPlay] = React.useState<boolean>(false);
+  const [statusText, setStatusText] = React.useState<string>("");
   const [settingEpisode, setSettingEpisode] = React.useState<ISettingEpisode>({
     quality: "720",
     episode: 1,
@@ -73,14 +74,17 @@ const WatchPage = () => {
 
     const findAnime = animeList.find((state) => state.code === name);
     if (!findAnime?.name) {
+      setStatusText("Загрузка...");
       AnimeService.getAnimeWithCode(name)
         .then((anime) => {
           if (!anime) return;
 
           const newArray = [...animeList, anime];
           dispatch(addNewAnime({ animeList: newArray }));
+          setStatusText("");
         })
         .catch((err) => {
+          setStatusText("Не найдено");
           return err;
         });
       return;
@@ -90,6 +94,7 @@ const WatchPage = () => {
 
   return (
     <div className={styles.container}>
+      {statusText}
       {currentAnime ? (
         <>
           <img className={styles.bg} src={currentAnime.backgroundImage} />
