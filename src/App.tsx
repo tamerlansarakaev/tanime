@@ -26,7 +26,6 @@ function App() {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [modalStatus, setModalStatus] = React.useState(true);
-  const [modalText, setModalText] = React.useState("");
 
   const loadAllAnimeForServer = async () => {
     try {
@@ -84,7 +83,6 @@ function App() {
             Возможна долгая загрузка проекта из-за ограниченных ресурсов
             бесплатного хостинга.
           </p>
-          <span className="loadingStatus">{modalText}</span>
         </div>
       </Modal>
     </div>
