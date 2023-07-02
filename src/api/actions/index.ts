@@ -1,5 +1,5 @@
 import { api } from "../index";
-import { IAnimeResponse } from "../../types";
+import { IAnime, IAnimeResponse } from "../../types";
 import Anime from "../Anime";
 
 class ApiService {
@@ -47,9 +47,11 @@ class ApiService {
     try {
       const resultText = text.replace(/[ ]/g, "-");
       const encodeText = encodeURIComponent(resultText);
-      const response = await api.get(`/anime/search/${encodeText}`).then((res) => {
-        return res.data;
-      });
+      const response = await api
+        .get(`/anime/search/${encodeText}`)
+        .then((res) => {
+          return res.data;
+        });
       const resultData = response.map((anime: IAnimeResponse) => {
         if (!anime.player.list) return;
         return new Anime({ ...anime }).details;
@@ -75,6 +77,19 @@ class ApiService {
       return response.length;
     } catch (error) {
       return false;
+    }
+  }
+
+  async getAnimeWithCode(code: string): Promise<any> {
+    try {
+      const response = await api
+        .get(`/anime/searchWithCode/${code}`)
+        .then((anime) => {
+          return new Anime({ ...anime.data }).details;
+        });
+      return response;
+    } catch (error) {
+      return Error();
     }
   }
 }

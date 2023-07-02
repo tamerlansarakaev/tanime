@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../../redux/config";
+import { useAppDispatch, useAppSelector } from "../../redux/config";
 import { IAnime } from "../../types";
 
 // Utils
@@ -12,6 +12,10 @@ import Select from "../../components/UI/Select/Select";
 
 // Styles
 import styles from "./WatchPage.module.scss";
+
+// Other
+import AnimeService from "../../api/actions/index";
+import { addNewAnime } from "../../redux/reducers/dataReducer";
 
 interface ISettingEpisode {
   quality: string;
@@ -35,6 +39,8 @@ const WatchPage = () => {
     (currentAnime &&
       currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
     "";
+
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setSettingEpisode({
@@ -63,8 +69,16 @@ const WatchPage = () => {
   }
 
   React.useEffect(() => {
+    if (!name || !animeList.length) return;
+
     const findAnime = animeList.find((state) => state.code === name);
     if (!findAnime?.name) {
+      AnimeService.getAnimeWithCode(name).then((anime) => {
+        if (!anime) return;
+
+        const newArray = [...animeList, anime];
+        dispatch(addNewAnime({ animeList: newArray }));
+      });
       return;
     }
     setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
