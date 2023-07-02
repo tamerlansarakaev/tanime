@@ -73,12 +73,16 @@ const WatchPage = () => {
 
     const findAnime = animeList.find((state) => state.code === name);
     if (!findAnime?.name) {
-      AnimeService.getAnimeWithCode(name).then((anime) => {
-        if (!anime) return;
+      AnimeService.getAnimeWithCode(name)
+        .then((anime) => {
+          if (!anime) return;
 
-        const newArray = [...animeList, anime];
-        dispatch(addNewAnime({ animeList: newArray }));
-      });
+          const newArray = [...animeList, anime];
+          dispatch(addNewAnime({ animeList: newArray }));
+        })
+        .catch((err) => {
+          return err;
+        });
       return;
     }
     setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
