@@ -19,6 +19,7 @@ export const loadAnime = createAction<IDataReducer>("global/anime/load");
 export const searchAnimeList = createAction<IDataReducer>(
   "global/anime/search"
 );
+export const addNewAnime = createAction<IDataReducer>("global/anime/add");
 
 export const dataReducer = createReducer(initialState, (builder) => {
   builder
@@ -29,6 +30,9 @@ export const dataReducer = createReducer(initialState, (builder) => {
     })
     .addCase(searchAnimeList, (state, action) => {
       state.searchAnimeList = action.payload.searchAnimeList;
+      state.animeList = action.payload.animeList;
+    })
+    .addCase(addNewAnime, (state, action) => {
       state.animeList = action.payload.animeList;
     });
 });
