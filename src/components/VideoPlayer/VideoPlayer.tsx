@@ -51,7 +51,6 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
   };
 
   const handleMouseMove = () => {
-    if (!play) return;
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
