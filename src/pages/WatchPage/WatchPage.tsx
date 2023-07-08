@@ -105,6 +105,11 @@ const WatchPage = () => {
               {checkGenres(currentAnime.genres)}
             </span>
           </div>
+          <p
+            className={`${styles.descriptionContainer} ${styles.episodesLengthContainer}`}
+          >
+            Количество серий: {currentAnime.episodes.length}
+          </p>
           <div className={styles.descriptionContainer}>
             <h2>Описание</h2>
             <p className={styles.description}>{currentAnime.description}</p>
