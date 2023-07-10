@@ -29,6 +29,11 @@ const HomePage = () => {
 
   const [status, setStatus] = React.useState(false);
 
+  React.useEffect(() => {
+    if (page === undefined) return;
+    setLimit(page * PAGE_ANIME_LIMIT);
+  }, [page]);
+
   async function handleClickMore() {
     if (!page) return;
     setStatus(true);
