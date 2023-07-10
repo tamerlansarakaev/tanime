@@ -102,7 +102,7 @@ const WatchPage = () => {
           <div className={styles.genresContainer}>
             <p className={styles.genresTitle}>Жанры: </p>
             <span className={styles.genres}>
-              {checkGenres(currentAnime.genres)}
+              {checkGenres(currentAnime.genres) ? checkGenres(currentAnime.genres) : 'Аниме'}
             </span>
           </div>
           <p

@@ -15,7 +15,9 @@ const AnimeCard = ({ name, genres, itemImage, code }: IAnime) => {
           <span className={styles.info__title}>{name}</span>
           <span className={styles.info__genresTitle}>
             Жанры:{" "}
-            <span className={styles.info__genres}>{checkGenres(genres)}</span>
+            <span className={styles.info__genres}>
+              {checkGenres(genres) ? checkGenres(genres) : "Аниме"}
+            </span>
           </span>
         </div>
       </div>
