@@ -27,25 +27,21 @@ const Search = ({ onValue, onSubmit }: Props) => {
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [foundList, setFoundList] = React.useState<IAnime[]>([]);
   const [value, setValue] = React.useState<string>("");
-  const [disabledInput, setDisabledInput] = React.useState(false);
+  const [disabledInput, setDisabledInput] = React.useState(true);
   const [focus, setFocus] = React.useState(false);
   const [statusFound, setStatusFound] = React.useState<boolean | null>(null);
 
+  const statusSearch = useAppSelector(
+    (state) => state.dataReducer.statusSearch
+  );
+
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function testInWorkDataBase() {
-    try {
-      const request = await ApiService.getAnimeFromSearch("наруто");
-      if (!request) return setDisabledInput(true);
-      return request;
-    } catch (error) {
-      return error;
-    }
-  }
-
   React.useEffect(() => {
-    testInWorkDataBase();
-  }, []);
+    if (statusSearch === undefined) return;
+    setDisabledInput(!statusSearch);
+    console.log(statusSearch)
+  }, [statusSearch]);
 
   const searchForName = async (newValue: string) => {
     setStatusFound(null);
