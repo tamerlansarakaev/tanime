@@ -40,7 +40,6 @@ const Search = ({ onValue, onSubmit }: Props) => {
   React.useEffect(() => {
     if (statusSearch === undefined) return;
     setDisabledInput(!statusSearch);
-    console.log(statusSearch)
   }, [statusSearch]);
 
   const searchForName = async (newValue: string) => {
