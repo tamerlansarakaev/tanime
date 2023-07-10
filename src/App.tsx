@@ -55,7 +55,7 @@ function App() {
             if (status) {
               const infoAlertItem: IAlert = {
                 id: alertList.length + 1,
-                title: "Данные загружены...",
+                title: "Данные загружены.",
                 type: "success",
               };
               const newArray = [...alertList, infoAlertItem];
@@ -75,7 +75,7 @@ function App() {
             if (!status) {
               const infoAlertItem: IAlert = {
                 id: alertList.length + 1,
-                title: "Данные не загружены...",
+                title: "Данные не загружены",
                 type: "error",
                 message: "Поиск будет отключен",
               };
