@@ -16,6 +16,7 @@ import ApiService from "../../api/actions/index";
 import { IAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
 import { sortWords } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 type Search = {
   onValue?: (e: string) => void;
@@ -31,6 +32,7 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
   const [disabledInput, setDisabledInput] = React.useState(true);
   const [focus, setFocus] = React.useState(false);
   const [statusFound, setStatusFound] = React.useState<boolean | null>(null);
+  const navigate = useNavigate();
 
   const statusSearch = useAppSelector(
     (state) => state.dataReducer.statusSearch
@@ -140,6 +142,7 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
                 cursor: value.trim().length ? "pointer" : "auto",
                 opacity: value.trim().length ? 1 : "0.5",
               }}
+              onClick={() => navigate("/anime/search/")}
             />
           </button>
         </form>
