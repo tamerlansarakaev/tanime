@@ -50,7 +50,9 @@ function App() {
           dispatch(loadAnime({ animeList: newAnimeList, page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer().then(() => {
+          loadAllAnimeForServer().then((status) => {
+            if (!status) return;
+
             ApiService.getAnimeFromSearch("наруто").then((status) => {
               if (status) {
                 const infoAlertItem: IAlert = {
