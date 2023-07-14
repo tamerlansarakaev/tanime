@@ -1,8 +1,11 @@
+import React from "react";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import Search from "../Search/Search";
+
+import Menu from "../Menu/Menu";
 
 import styles from "./Header.module.scss";
-import Search from "../Search/Search";
 
 interface IHeader {
   logoTitle: string;
@@ -14,6 +17,27 @@ interface IHeader {
 
 const Header = ({ logoTitle, links }: IHeader) => {
   const navigate = useNavigate();
+  const [adaptive, setAdaptive] = React.useState(false);
+
+  function handleInnerWidth(width: number) {
+    if (width <= 1100) {
+      setAdaptive(true);
+    } else {
+      setAdaptive(false);
+    }
+    return width;
+  }
+
+  React.useEffect(() => {
+    const handleResize = (res: any) =>
+      handleInnerWidth(res.currentTarget.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -30,7 +54,11 @@ const Header = ({ logoTitle, links }: IHeader) => {
             ))}
         </ul>
       </nav>
-      <Search onSubmit={() => navigate("/anime/search/")} />
+      {!adaptive ? (
+        <Search onSubmit={() => navigate("/anime/search/")} />
+      ) : (
+        <Menu />
+      )}
     </header>
   );
 };

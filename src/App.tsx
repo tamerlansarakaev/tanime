@@ -50,7 +50,51 @@ function App() {
           dispatch(loadAnime({ animeList: newAnimeList, page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer();
+          loadAllAnimeForServer().then(() => {
+            ApiService.getAnimeFromSearch("наруто").then((status) => {
+              if (status) {
+                const infoAlertItem: IAlert = {
+                  id: alertList.length + 1,
+                  title: "Данные загружены.",
+                  type: "success",
+                };
+                const newArray = [...alertList, infoAlertItem];
+
+                dispatch(
+                  updateAlertList({
+                    alertList: newArray,
+                  })
+                );
+                dispatch(
+                  updateStatusSearch({
+                    animeList: newAnimeList,
+                    statusSearch: true,
+                  })
+                );
+              }
+              if (!status) {
+                const infoAlertItem: IAlert = {
+                  id: alertList.length + 1,
+                  title: "Данные не загружены",
+                  type: "error",
+                  message: "Поиск будет отключен",
+                };
+                const newArray = [...alertList, infoAlertItem];
+
+                dispatch(
+                  updateAlertList({
+                    alertList: newArray,
+                  })
+                );
+                dispatch(
+                  updateStatusSearch({
+                    animeList: newAnimeList,
+                    statusSearch: false,
+                  })
+                );
+              }
+            });
+          });
           ApiService.getAnimeFromSearch("наруто").then((status) => {
             if (status) {
               const infoAlertItem: IAlert = {

@@ -17,12 +17,13 @@ import { IAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
 import { sortWords } from "../../utils";
 
-type Props = {
+type Search = {
   onValue?: (e: string) => void;
   onSubmit?: (e: string) => void;
+  maxWidth?: string;
 };
 
-const Search = ({ onValue, onSubmit }: Props) => {
+const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [foundList, setFoundList] = React.useState<IAnime[]>([]);
@@ -90,6 +91,9 @@ const Search = ({ onValue, onSubmit }: Props) => {
         className={styles.container}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
+        style={{
+          maxWidth,
+        }}
       >
         <form
           onSubmit={(e) => {
@@ -103,6 +107,9 @@ const Search = ({ onValue, onSubmit }: Props) => {
             disableUnderline
             placeholder={"Название аниме"}
             disabled={disabledInput}
+            sx={{
+              width: "100%",
+            }}
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
