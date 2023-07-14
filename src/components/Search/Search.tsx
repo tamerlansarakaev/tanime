@@ -66,6 +66,7 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
       }
 
       setStatusFound(true);
+      navigate("/anime/search/");
 
       const sortedArray = sortWords(response, resultValue);
       setFoundList(sortedArray);
