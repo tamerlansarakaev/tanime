@@ -29,8 +29,12 @@ const Header = ({ logoTitle, links }: IHeader) => {
   }
 
   React.useEffect(() => {
-    const handleResize = (res: any) =>
-      handleInnerWidth(res.currentTarget.innerWidth);
+    const handleResize = () => {
+      const innerWidth = window.innerWidth;
+      handleInnerWidth(innerWidth);
+    };
+
+    handleResize();
 
     window.addEventListener("resize", handleResize);
 
