@@ -30,6 +30,10 @@ const Menu = () => {
         onClick={() => setStatus(!status)}
         sx={{
           cursor: "pointer",
+          transition: "0.5s",
+          ":hover": {
+            color: "var(--standartRedColor)",
+          },
         }}
       />
       <div
