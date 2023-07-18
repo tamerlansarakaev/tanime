@@ -1,14 +1,14 @@
 <br>
 <div align="center">
     <h1>TANIME</h1>
-    <a href="https://tanime-psi.vercel.app"> 
+    <a href="https://tanime.ru"> 
         <img src="./public/icon.png" alt="icon" width="200" height="200">
     </a>
 </div>
 
 ## About TANIME
 
-[TANIME](https://tanime-psi.vercel.app) is a project to watch anime in russian language, you can find interested anime using search which located in upper right just [watch and enjoy](https://tanime-psi.vercel.app)
+[TANIME](https://tanime.ru) is a project to watch anime in russian language, you can find interested anime using search which located in upper right just [watch and enjoy](https://tanime.ru)
 
 ## Build With
 
