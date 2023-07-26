@@ -1,4 +1,4 @@
 export const config = {
-  url: "http://anime-db-taupe.vercel.app/api",
+  url: "https://anime-db-taupe.vercel.app/api",
   API_KEY: "TEST",
 };
