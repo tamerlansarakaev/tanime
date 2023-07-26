@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/config";
+import { useAppSelector } from "../../redux/config";
 import { IAnime } from "../../types";
 
 // Utils

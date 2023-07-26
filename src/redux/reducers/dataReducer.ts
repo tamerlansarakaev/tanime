@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { IAnime, IPreviewAnime } from "../../types";
+import { IPreviewAnime } from "../../types";
 
 interface IDataReducer {
   animeList: IPreviewAnime[];
