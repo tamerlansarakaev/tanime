@@ -100,7 +100,7 @@ class ApiService {
 
   async publishAnime() {
     try {
-      const response = await api.get(`/anime/publish`);
+      const response = await api.get(`/load/publish`);
       return response;
     } catch (error) {
       return Error();

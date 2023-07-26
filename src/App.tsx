@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./redux/config";
-import { loadAnime, updateStatusSearch } from "./redux/reducers/dataReducer";
+import { loadAnime } from "./redux/reducers/dataReducer";
 
 // API
 import ApiService from "./api/actions/index";
@@ -17,13 +17,11 @@ import WatchPage from "./pages/WatchPage/WatchPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
 // Interfaces and Types
-import { IAnime, IPreviewAnime } from "./types";
+import { IPreviewAnime } from "./types";
 
 // Styles
 import "./App.css";
 import "./defaultStyles/index.scss";
-
-import { IAlert, updateAlertList } from "./redux/reducers/alertReducer";
 
 function App() {
   const [modalStatus, setModalStatus] = React.useState(true);
