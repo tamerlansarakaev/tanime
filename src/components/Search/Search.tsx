@@ -12,10 +12,9 @@ import SearchIcon from "@mui/icons-material/Search";
 // Styles
 import styles from "./Search.module.scss";
 
-import ApiService from "../../api/actions/index";
-import { IAnime } from "../../types";
+import { IPreviewAnime } from "../../types";
 import { searchAnimeList } from "../../redux/reducers/dataReducer";
-import { sortWords } from "../../utils";
+import { replaceTextForSymbols, sortWords } from "../../utils";
 import { useNavigate } from "react-router-dom";
 
 type Search = {
@@ -27,23 +26,13 @@ type Search = {
 const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
-  const [foundList, setFoundList] = React.useState<IAnime[]>([]);
+  const [foundList, setFoundList] = React.useState<IPreviewAnime[]>([]);
   const [value, setValue] = React.useState<string>("");
-  const [disabledInput, setDisabledInput] = React.useState(true);
   const [focus, setFocus] = React.useState(false);
   const [statusFound, setStatusFound] = React.useState<boolean | null>(null);
   const navigate = useNavigate();
 
-  const statusSearch = useAppSelector(
-    (state) => state.dataReducer.statusSearch
-  );
-
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  React.useEffect(() => {
-    if (statusSearch === undefined) return;
-    setDisabledInput(!statusSearch);
-  }, [statusSearch]);
 
   const searchForName = async (newValue: string) => {
     setStatusFound(null);
@@ -52,13 +41,16 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
       clearTimeout(timeoutId.current);
     }
 
-    if (!newValue.trim().length || !value) return;
+    if (!newValue.trim().length || !value || !animeList.length) return;
 
     const resultValue = value.trim().toLowerCase();
     timeoutId.current = setTimeout(async () => {
-      const response = await ApiService.getAnimeFromSearch(
-        newValue.toLowerCase().trim()
-      );
+      const response = animeList.filter((anime: IPreviewAnime) => {
+        const resultAnimeName = replaceTextForSymbols(anime.name.toLowerCase());
+        const resultWriteText = replaceTextForSymbols(newValue.toLowerCase());
+        const findIndex = resultAnimeName.indexOf(resultWriteText);
+        return findIndex > -1;
+      });
 
       if (!response.length) {
         setStatusFound(false);
@@ -109,7 +101,6 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
           <Input
             disableUnderline
             placeholder={"Название аниме"}
-            disabled={disabledInput}
             sx={{
               width: "100%",
             }}

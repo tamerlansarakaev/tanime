@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "./redux/config";
-import { loadAnime, updateStatusSearch } from "./redux/reducers/dataReducer";
+import { loadAnime } from "./redux/reducers/dataReducer";
 
 // API
 import ApiService from "./api/actions/index";
@@ -17,13 +17,11 @@ import WatchPage from "./pages/WatchPage/WatchPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
 // Interfaces and Types
-import { IAnime } from "./types";
+import { IPreviewAnime } from "./types";
 
 // Styles
 import "./App.css";
 import "./defaultStyles/index.scss";
-
-import { IAlert, updateAlertList } from "./redux/reducers/alertReducer";
 
 function App() {
   const [modalStatus, setModalStatus] = React.useState(true);
@@ -45,108 +43,21 @@ function App() {
     if (!animeList.length) {
       try {
         ApiService.getAllAnime().then(async (data) => {
-          const newAnimeList = data as IAnime[];
+          const newAnimeList = data as IPreviewAnime[];
 
           dispatch(loadAnime({ animeList: newAnimeList, page: 1 }));
           setModalStatus(false);
 
           loadAllAnimeForServer().then((status) => {
             if (!status) return;
-
-            ApiService.getAnimeFromSearch("наруто").then((status) => {
-              if (status) {
-                const infoAlertItem: IAlert = {
-                  id: alertList.length + 1,
-                  title: "Данные загружены.",
-                  type: "success",
-                };
-                const newArray = [...alertList, infoAlertItem];
-
-                dispatch(
-                  updateAlertList({
-                    alertList: newArray,
-                  })
-                );
-                dispatch(
-                  updateStatusSearch({
-                    animeList: newAnimeList,
-                    statusSearch: true,
-                  })
-                );
-              }
-              if (!status) {
-                const infoAlertItem: IAlert = {
-                  id: alertList.length + 1,
-                  title: "Данные не загружены",
-                  type: "error",
-                  message: "Поиск будет отключен",
-                };
-                const newArray = [...alertList, infoAlertItem];
-
-                dispatch(
-                  updateAlertList({
-                    alertList: newArray,
-                  })
-                );
-                dispatch(
-                  updateStatusSearch({
-                    animeList: newAnimeList,
-                    statusSearch: false,
-                  })
-                );
-              }
-            });
-          });
-          ApiService.getAnimeFromSearch("наруто").then((status) => {
-            if (status) {
-              const infoAlertItem: IAlert = {
-                id: alertList.length + 1,
-                title: "Данные загружены.",
-                type: "success",
-              };
-              const newArray = [...alertList, infoAlertItem];
-
-              dispatch(
-                updateAlertList({
-                  alertList: newArray,
-                })
-              );
-              dispatch(
-                updateStatusSearch({
-                  animeList: newAnimeList,
-                  statusSearch: true,
-                })
-              );
-            }
-            if (!status) {
-              const infoAlertItem: IAlert = {
-                id: alertList.length + 1,
-                title: "Данные не загружены",
-                type: "error",
-                message: "Поиск будет отключен",
-              };
-              const newArray = [...alertList, infoAlertItem];
-
-              dispatch(
-                updateAlertList({
-                  alertList: newArray,
-                })
-              );
-              dispatch(
-                updateStatusSearch({
-                  animeList: newAnimeList,
-                  statusSearch: false,
-                })
-              );
-            }
           });
         });
       } catch (error) {
         ApiService.getAllAnime().then(async (data) => {
-          dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
+          dispatch(loadAnime({ animeList: data as IPreviewAnime[], page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer();
+          loadAllAnimeForServer().then(() => ApiService.publishAnime());
           return error;
         });
       }

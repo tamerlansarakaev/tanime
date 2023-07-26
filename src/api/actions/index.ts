@@ -1,20 +1,25 @@
 import { api } from "../index";
-import { IAnimeResponse } from "../../types";
-import Anime from "../Anime";
+import { IAnimeResponse, IPreviewAnime } from "../../types";
+import Anime, { PreviewAnime } from "../Anime";
+import axios from "axios";
+
+const url =
+  "https://tanime-e1e71-default-rtdb.europe-west1.firebasedatabase.app";
 
 class ApiService {
-  async getAllAnime() {
-    try {
-      const response = (await api.get("/anime/list/last")).data;
-      const resultData = response.map((anime: IAnimeResponse) => {
-        if (!anime.player.list) return;
-        return new Anime({ ...anime }).details;
-      });
-      return resultData;
-    } catch (error) {
-      return error;
-    }
-  }
+  // async getAllAnime() {
+  //   try {
+  //     const response = (await api.get("/anime/list/last")).data;
+  //     const resultData = response.map((anime: IAnimeResponse) => {
+  //       if (!anime.player.list) return;
+  //       return new Anime({ ...anime }).details;
+  //     });
+  //     return resultData;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
+
   async getAnimeFromPage(page: number) {
     try {
       const response = (await api.get(`/anime/list/${page}`)).data;
@@ -90,6 +95,27 @@ class ApiService {
       return response;
     } catch (error) {
       return Error();
+    }
+  }
+
+  async publishAnime() {
+    try {
+      const response = await api.get(`/load/publish`);
+      return response;
+    } catch (error) {
+      return Error();
+    }
+  }
+
+  async getAllAnime() {
+    try {
+      const response = (await axios(`${url}/anime/list.json`)).data;
+      const resultData = response.map((anime: IPreviewAnime) => {
+        return new PreviewAnime({ ...anime }).details;
+      });
+      return resultData;
+    } catch (error) {
+      return error;
     }
   }
 }

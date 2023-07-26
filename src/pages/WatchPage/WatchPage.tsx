@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/config";
 import { IAnime } from "../../types";
 
 // Utils
-import { deleteComma, checkGenres } from "../../utils";
+import { checkGenres } from "../../utils";
 
 // Components
 import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
@@ -15,7 +15,6 @@ import styles from "./WatchPage.module.scss";
 
 // Other
 import AnimeService from "../../api/actions/index";
-import { addNewAnime } from "../../redux/reducers/dataReducer";
 
 interface ISettingEpisode {
   quality: string;
@@ -40,8 +39,6 @@ const WatchPage = () => {
     (currentAnime &&
       currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
     "";
-
-  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setSettingEpisode({
@@ -72,24 +69,19 @@ const WatchPage = () => {
   React.useEffect(() => {
     if (!name || !animeList.length) return;
 
-    const findAnime = animeList.find((state) => state.code === name);
-    if (!findAnime?.name) {
-      setStatusText("Загрузка...");
-      AnimeService.getAnimeWithCode(name)
-        .then((anime) => {
-          if (!anime) return;
+    setStatusText("Загрузка...");
+    AnimeService.getAnimeWithCode(name)
+      .then((anime) => {
+        if (!anime) return;
 
-          const newArray = [...animeList, anime];
-          dispatch(addNewAnime({ animeList: newArray }));
-          setStatusText("");
-        })
-        .catch((err) => {
-          setStatusText("Не найдено");
-          return err;
-        });
-      return;
-    }
-    setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
+        setCurrentAnime(anime);
+        setStatusText("");
+      })
+      .catch((err) => {
+        setStatusText("Не найдено");
+        return err;
+      });
+    return;
   }, [animeList, name]);
 
   return (
@@ -102,7 +94,9 @@ const WatchPage = () => {
           <div className={styles.genresContainer}>
             <p className={styles.genresTitle}>Жанры: </p>
             <span className={styles.genres}>
-              {checkGenres(currentAnime.genres) ? checkGenres(currentAnime.genres) : 'Аниме'}
+              {checkGenres(currentAnime.genres)
+                ? checkGenres(currentAnime.genres)
+                : "Аниме"}
             </span>
           </div>
           <p

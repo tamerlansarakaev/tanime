@@ -55,3 +55,13 @@ export interface IAnimeResponse {
     list: IEpisode[];
   };
 }
+
+export interface IPreviewAnime {
+  name: string;
+  poster: {
+    url: string;
+  };
+  code: string;
+  favorite?: number;
+  genres: Array<string>;
+}
