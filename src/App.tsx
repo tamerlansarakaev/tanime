@@ -57,7 +57,7 @@ function App() {
           dispatch(loadAnime({ animeList: data as IPreviewAnime[], page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer();
+          loadAllAnimeForServer().then(() => ApiService.publishAnime());
           return error;
         });
       }

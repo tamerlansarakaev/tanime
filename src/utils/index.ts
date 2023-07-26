@@ -1,4 +1,4 @@
-import { IAnime, IPreviewAnime } from "../types";
+import { IPreviewAnime } from "../types";
 
 export function checkGenres(genres: Array<string>) {
   if (!genres) return;

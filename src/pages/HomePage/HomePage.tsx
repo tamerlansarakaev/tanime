@@ -8,7 +8,7 @@ import ApiService from "../../api/actions/index";
 import BackgroundImage from "../../assets/images/background.webp";
 
 // Interface
-import { IAnime, IPreviewAnime } from "../../types/index";
+import { IPreviewAnime } from "../../types/index";
 
 // Styles
 import styles from "./HomePage.module.scss";

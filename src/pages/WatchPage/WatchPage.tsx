@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/config";
 import { IAnime } from "../../types";
 
 // Utils
-import { deleteComma, checkGenres } from "../../utils";
+import { checkGenres } from "../../utils";
 
 // Components
 import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
@@ -15,7 +15,6 @@ import styles from "./WatchPage.module.scss";
 
 // Other
 import AnimeService from "../../api/actions/index";
-import { addNewAnime } from "../../redux/reducers/dataReducer";
 
 interface ISettingEpisode {
   quality: string;
@@ -40,8 +39,6 @@ const WatchPage = () => {
     (currentAnime &&
       currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
     "";
-
-  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     setSettingEpisode({

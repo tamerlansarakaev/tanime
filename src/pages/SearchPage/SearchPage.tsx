@@ -5,11 +5,13 @@ import styles from "./SearchPage.module.scss";
 
 import Main from "../../components/Main/Main";
 import AnimeCardList from "../../components/AnimeCardList/AnimeCardList";
-import { IAnime } from "../../types";
+import { IPreviewAnime } from "../../types";
 import { useAppSelector } from "../../redux/config";
 
 const SearchPage = () => {
-  const [sortedAnimeList, setSortedAnimeList] = React.useState<IAnime[]>([]);
+  const [sortedAnimeList, setSortedAnimeList] = React.useState<IPreviewAnime[]>(
+    []
+  );
   const animeList = useAppSelector(
     (state) => state.dataReducer.searchAnimeList
   );
