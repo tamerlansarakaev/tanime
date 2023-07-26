@@ -1,4 +1,4 @@
-import { IAnime } from "../types";
+import { IAnime, IPreviewAnime } from "../types";
 
 export function checkGenres(genres: Array<string>) {
   if (!genres) return;
@@ -58,7 +58,7 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
   }
 }
 
-export function sortWords(array: Array<IAnime>, word: string) {
+export function sortWords(array: Array<IPreviewAnime>, word: string) {
   if (!array) return [];
   const symbols = /[, :.]/g;
   const replacedText = word.replace(symbols, "").trim().toLowerCase();

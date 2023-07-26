@@ -17,7 +17,7 @@ import WatchPage from "./pages/WatchPage/WatchPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 
 // Interfaces and Types
-import { IAnime } from "./types";
+import { IAnime, IPreviewAnime } from "./types";
 
 // Styles
 import "./App.css";
@@ -45,105 +45,18 @@ function App() {
     if (!animeList.length) {
       try {
         ApiService.getAllAnime().then(async (data) => {
-          const newAnimeList = data as IAnime[];
+          const newAnimeList = data as IPreviewAnime[];
 
           dispatch(loadAnime({ animeList: newAnimeList, page: 1 }));
           setModalStatus(false);
 
           loadAllAnimeForServer().then((status) => {
             if (!status) return;
-
-            ApiService.getAnimeFromSearch("наруто").then((status) => {
-              if (status) {
-                const infoAlertItem: IAlert = {
-                  id: alertList.length + 1,
-                  title: "Данные загружены.",
-                  type: "success",
-                };
-                const newArray = [...alertList, infoAlertItem];
-
-                dispatch(
-                  updateAlertList({
-                    alertList: newArray,
-                  })
-                );
-                dispatch(
-                  updateStatusSearch({
-                    animeList: newAnimeList,
-                    statusSearch: true,
-                  })
-                );
-              }
-              if (!status) {
-                const infoAlertItem: IAlert = {
-                  id: alertList.length + 1,
-                  title: "Данные не загружены",
-                  type: "error",
-                  message: "Поиск будет отключен",
-                };
-                const newArray = [...alertList, infoAlertItem];
-
-                dispatch(
-                  updateAlertList({
-                    alertList: newArray,
-                  })
-                );
-                dispatch(
-                  updateStatusSearch({
-                    animeList: newAnimeList,
-                    statusSearch: false,
-                  })
-                );
-              }
-            });
-          });
-          ApiService.getAnimeFromSearch("наруто").then((status) => {
-            if (status) {
-              const infoAlertItem: IAlert = {
-                id: alertList.length + 1,
-                title: "Данные загружены.",
-                type: "success",
-              };
-              const newArray = [...alertList, infoAlertItem];
-
-              dispatch(
-                updateAlertList({
-                  alertList: newArray,
-                })
-              );
-              dispatch(
-                updateStatusSearch({
-                  animeList: newAnimeList,
-                  statusSearch: true,
-                })
-              );
-            }
-            if (!status) {
-              const infoAlertItem: IAlert = {
-                id: alertList.length + 1,
-                title: "Данные не загружены",
-                type: "error",
-                message: "Поиск будет отключен",
-              };
-              const newArray = [...alertList, infoAlertItem];
-
-              dispatch(
-                updateAlertList({
-                  alertList: newArray,
-                })
-              );
-              dispatch(
-                updateStatusSearch({
-                  animeList: newAnimeList,
-                  statusSearch: false,
-                })
-              );
-            }
           });
         });
       } catch (error) {
         ApiService.getAllAnime().then(async (data) => {
-          dispatch(loadAnime({ animeList: data as IAnime[], page: 1 }));
+          dispatch(loadAnime({ animeList: data as IPreviewAnime[], page: 1 }));
           setModalStatus(false);
 
           loadAllAnimeForServer();

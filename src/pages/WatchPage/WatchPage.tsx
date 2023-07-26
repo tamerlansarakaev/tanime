@@ -72,24 +72,19 @@ const WatchPage = () => {
   React.useEffect(() => {
     if (!name || !animeList.length) return;
 
-    const findAnime = animeList.find((state) => state.code === name);
-    if (!findAnime?.name) {
-      setStatusText("Загрузка...");
-      AnimeService.getAnimeWithCode(name)
-        .then((anime) => {
-          if (!anime) return;
+    setStatusText("Загрузка...");
+    AnimeService.getAnimeWithCode(name)
+      .then((anime) => {
+        if (!anime) return;
 
-          const newArray = [...animeList, anime];
-          dispatch(addNewAnime({ animeList: newArray }));
-          setStatusText("");
-        })
-        .catch((err) => {
-          setStatusText("Не найдено");
-          return err;
-        });
-      return;
-    }
-    setCurrentAnime({ ...findAnime, name: deleteComma(findAnime?.name) });
+        setCurrentAnime(anime);
+        setStatusText("");
+      })
+      .catch((err) => {
+        setStatusText("Не найдено");
+        return err;
+      });
+    return;
   }, [animeList, name]);
 
   return (
@@ -102,7 +97,9 @@ const WatchPage = () => {
           <div className={styles.genresContainer}>
             <p className={styles.genresTitle}>Жанры: </p>
             <span className={styles.genres}>
-              {checkGenres(currentAnime.genres) ? checkGenres(currentAnime.genres) : 'Аниме'}
+              {checkGenres(currentAnime.genres)
+                ? checkGenres(currentAnime.genres)
+                : "Аниме"}
             </span>
           </div>
           <p

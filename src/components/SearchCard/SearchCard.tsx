@@ -1,9 +1,9 @@
-import { IAnime } from "../../types";
+import { IAnime, IPreviewAnime } from "../../types";
 
 import styles from "./SearchCard.module.scss";
 import { NavLink } from "react-router-dom";
 
-interface ISearchCard extends IAnime {
+interface ISearchCard extends IPreviewAnime {
   onClick: () => void;
 }
 

@@ -1,11 +1,11 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { IAnime } from "../../types";
+import { IAnime, IPreviewAnime } from "../../types";
 
 interface IDataReducer {
-  animeList: IAnime[];
+  animeList: IPreviewAnime[];
   type?: string;
   page?: number;
-  searchAnimeList?: IAnime[];
+  searchAnimeList?: IPreviewAnime[];
   statusSearch?: boolean;
 }
 

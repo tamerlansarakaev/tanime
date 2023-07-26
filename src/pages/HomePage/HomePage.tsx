@@ -8,7 +8,7 @@ import ApiService from "../../api/actions/index";
 import BackgroundImage from "../../assets/images/background.webp";
 
 // Interface
-import { IAnime } from "../../types/index";
+import { IAnime, IPreviewAnime } from "../../types/index";
 
 // Styles
 import styles from "./HomePage.module.scss";
@@ -42,7 +42,7 @@ const HomePage = () => {
     if (newAnimeList) {
       dispatch(
         loadAnime({
-          animeList: [...animeList, ...newAnimeList] as IAnime[],
+          animeList: [...animeList, ...newAnimeList] as IPreviewAnime[],
           page: newPage,
         })
       );

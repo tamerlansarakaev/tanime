@@ -1,9 +1,15 @@
-import { AnimeEpisode, IAnime, IAnimeResponse, IEpisode } from "../types";
+import {
+  AnimeEpisode,
+  IAnime,
+  IAnimeResponse,
+  IEpisode,
+  IPreviewAnime,
+} from "../types";
 
 const videoURL = "https://cache.libria.fun";
 const defaultURL = "https://www.anilibria.tv/";
 
-class Anime implements IAnime {
+export default class Anime implements IAnime {
   name: string;
   episodes: AnimeEpisode[];
   id: string | number;
@@ -44,4 +50,24 @@ class Anime implements IAnime {
   }
 }
 
-export default Anime;
+export class PreviewAnime implements IPreviewAnime {
+  name: string;
+  code: string;
+  poster: { url: string };
+  favorite: number;
+  genres: string[];
+
+  constructor(anime: IPreviewAnime) {
+    this.name = anime.name;
+    this.code = anime.code;
+    this.poster = {
+      url: defaultURL + anime.poster.url,
+    };
+    this.favorite = anime.favorite;
+    this.genres = anime.genres;
+  }
+
+  get details() {
+    return { ...this };
+  }
+}
