@@ -63,7 +63,7 @@ export class PreviewAnime implements IPreviewAnime {
     this.poster = {
       url: defaultURL + anime.poster.url,
     };
-    this.favorite = anime.favorite;
+    this.favorite = anime.favorite || 0;
     this.genres = anime.genres;
   }
 
