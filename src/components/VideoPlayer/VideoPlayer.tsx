@@ -70,24 +70,18 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
           return;
         }
         case "ArrowRight": {
-          if (
-            playerRef.current &&
-            duration &&
-            playerRef.current.getCurrentTime() !== props.progress
-          ) {
+          if (playerRef.current) {
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
           }
           return;
         }
-        case "ArrowLeft": {
-          if (
-            playerRef.current &&
-            duration &&
-            playerRef.current.getCurrentTime() !== props.progress
-          ) {
-            playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
+        case "ArrowLeft":
+          {
+            if (playerRef.current) {
+              playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
+            }
           }
-        }
+          return;
       }
     };
 
