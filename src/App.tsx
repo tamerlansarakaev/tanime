@@ -50,6 +50,7 @@ function App() {
 
           loadAllAnimeForServer().then((status) => {
             if (!status) return;
+            ApiService.publishAnime();
           });
         });
       } catch (error) {
