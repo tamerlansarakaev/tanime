@@ -1,7 +1,5 @@
 import React from "react";
-import { useAppSelector } from "../../redux/config";
-
-// Api
+import { useAppDispatch, useAppSelector } from "../../redux/config";
 
 // BG
 import BackgroundImage from "../../assets/images/background.webp";
@@ -12,6 +10,7 @@ import styles from "./HomePage.module.scss";
 import AnimeCardList from "../../components/AnimeCardList/AnimeCardList";
 import Main from "../../components/Main/Main";
 import { Button } from "@mui/material";
+import { loadAnime } from "../../redux/reducers/dataReducer";
 
 const PAGE_ANIME_LIMIT = 8;
 
@@ -20,6 +19,7 @@ const HomePage = () => {
 
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const page = useAppSelector((state) => state.dataReducer.page);
+  const dispatch = useAppDispatch();
 
   const [status, setStatus] = React.useState(false);
 
@@ -31,6 +31,13 @@ const HomePage = () => {
   async function handleClickMore() {
     if (!page) return;
     setStatus(true);
+    const newPage = page + 1;
+    dispatch(
+      loadAnime({
+        animeList: animeList,
+        page: newPage,
+      })
+    );
     setLimit(limit + PAGE_ANIME_LIMIT);
     setStatus(false);
   }
