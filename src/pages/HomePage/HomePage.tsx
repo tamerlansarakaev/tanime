@@ -37,16 +37,6 @@ const HomePage = () => {
   async function handleClickMore() {
     if (!page) return;
     setStatus(true);
-    const newPage = page + 1;
-    const newAnimeList = await ApiService.getAnimeFromPage(newPage);
-    if (newAnimeList) {
-      dispatch(
-        loadAnime({
-          animeList: [...animeList, ...newAnimeList] as IPreviewAnime[],
-          page: newPage,
-        })
-      );
-    }
     setLimit(limit + PAGE_ANIME_LIMIT);
     setStatus(false);
   }
