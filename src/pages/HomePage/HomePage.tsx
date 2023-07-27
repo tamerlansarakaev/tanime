@@ -1,14 +1,10 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/config";
+import { useAppSelector } from "../../redux/config";
 
 // Api
-import ApiService from "../../api/actions/index";
 
 // BG
 import BackgroundImage from "../../assets/images/background.webp";
-
-// Interface
-import { IPreviewAnime } from "../../types/index";
 
 // Styles
 import styles from "./HomePage.module.scss";
@@ -16,7 +12,6 @@ import styles from "./HomePage.module.scss";
 import AnimeCardList from "../../components/AnimeCardList/AnimeCardList";
 import Main from "../../components/Main/Main";
 import { Button } from "@mui/material";
-import { loadAnime } from "../../redux/reducers/dataReducer";
 
 const PAGE_ANIME_LIMIT = 8;
 
@@ -25,7 +20,6 @@ const HomePage = () => {
 
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const page = useAppSelector((state) => state.dataReducer.page);
-  const dispatch = useAppDispatch();
 
   const [status, setStatus] = React.useState(false);
 
