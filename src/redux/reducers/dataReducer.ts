@@ -24,6 +24,8 @@ export const updateStatusSearch = createAction<IDataReducer>(
 export const searchAnimeList = createAction<IDataReducer>(
   "global/anime/search"
 );
+
+export const updatePage = createAction<{ page: number }>("anime/limit");
 export const addNewAnime = createAction<IDataReducer>("global/anime/add");
 
 export const dataReducer = createReducer(initialState, (builder) => {
@@ -31,6 +33,9 @@ export const dataReducer = createReducer(initialState, (builder) => {
     .addCase(loadAnime, (state, action) => {
       state.animeList = action.payload.animeList;
       state.type = action.type;
+      state.page = action.payload.page;
+    })
+    .addCase(updatePage, (state, action) => {
       state.page = action.payload.page;
     })
     .addCase(searchAnimeList, (state, action) => {

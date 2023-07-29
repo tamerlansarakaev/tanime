@@ -21,6 +21,39 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
 
+const sliderStyles = {
+  color: "#f74343",
+  opacity: "0.5",
+
+  ":hover": {
+    opacity: 1,
+
+    "& .MuiSlider-track": {
+      cursor: "pointer",
+    },
+
+    "& .MuiSlider-thumb": {
+      width: "18px",
+      height: "18px",
+    },
+  },
+
+  "& .MuiSlider-thumb": {
+    width: 0,
+    height: 0,
+    transition: "0.2s",
+  },
+  "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible": {
+    boxShadow: "none",
+  },
+  "& .MuiSlider-thumb.Mui-active": {
+    boxShadow: "none",
+  },
+  "& .MuiSlider-track": {
+    cursor: "default",
+  },
+};
+
 const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
   const [play, setPlay] = React.useState<boolean>(false);
   const [firstPlay, setFirstPlay] = React.useState(true);
@@ -192,39 +225,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
                 props.onChangeProgress(e.target.value);
                 setRewind(e.target.value);
               }}
-              sx={{
-                color: "#f74343",
-                opacity: "0.5",
-
-                ":hover": {
-                  opacity: 1,
-
-                  "& .MuiSlider-track": {
-                    cursor: "pointer",
-                  },
-
-                  "& .MuiSlider-thumb": {
-                    width: "18px",
-                    height: "18px",
-                  },
-                },
-
-                "& .MuiSlider-thumb": {
-                  width: 0,
-                  height: 0,
-                  transition: "0.2s",
-                },
-                "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible":
-                  {
-                    boxShadow: "none",
-                  },
-                "& .MuiSlider-thumb.Mui-active": {
-                  boxShadow: "none",
-                },
-                "& .MuiSlider-track": {
-                  cursor: "default",
-                },
-              }}
+              sx={sliderStyles}
             />
             <div className={styles.elementsGroup}>
               <div className={styles.elements}>

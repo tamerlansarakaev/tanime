@@ -7,10 +7,12 @@ import BackgroundImage from "../../assets/images/background.webp";
 // Styles
 import styles from "./HomePage.module.scss";
 
+// Components
 import AnimeCardList from "../../components/AnimeCardList/AnimeCardList";
 import Main from "../../components/Main/Main";
-import { Button } from "@mui/material";
-import { loadAnime } from "../../redux/reducers/dataReducer";
+
+// Other
+import { updatePage } from "../../redux/reducers/dataReducer";
 
 const PAGE_ANIME_LIMIT = 8;
 
@@ -21,57 +23,53 @@ const HomePage = () => {
   const page = useAppSelector((state) => state.dataReducer.page);
   const dispatch = useAppDispatch();
 
-  const [status, setStatus] = React.useState(false);
+  const animeListRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    if (page === undefined) return;
-    setLimit(page * PAGE_ANIME_LIMIT);
+  const handleScroll = React.useCallback(() => {
+    const animeListHeight = animeListRef.current?.scrollHeight;
+    const currentScroll = window.scrollY;
+    const windowHeight = window.innerHeight;
+
+    if (!animeListHeight) return;
+
+    const distanceFromBottom = animeListHeight - (currentScroll + windowHeight);
+
+    if (distanceFromBottom <= 0 && typeof page === "number") {
+      const newPage = page + 1;
+      dispatch(
+        updatePage({
+          page: newPage,
+        })
+      );
+    }
   }, [page]);
 
-  async function handleClickMore() {
+  React.useEffect(() => {
     if (!page) return;
-    setStatus(true);
-    const newPage = page + 1;
-    dispatch(
-      loadAnime({
-        animeList: animeList,
-        page: newPage,
-      })
-    );
-    setLimit(limit + PAGE_ANIME_LIMIT);
-    setStatus(false);
-  }
+    setLimit(PAGE_ANIME_LIMIT * page);
+  }, [page]);
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [page]);
 
   return (
     <>
       <img src={BackgroundImage} className="bg" />
       <div className={styles.container}>
         <Main title="СПИСОК АНИМЕ">
-          <AnimeCardList animeList={animeList} limit={limit} />
-          <Button
-            onClick={handleClickMore}
-            disabled={status}
-            sx={{
-              width: "fit-content",
-              margin: "0 auto",
-              borderRadius: "12px",
-              background: "var(--standartRedColor)",
-              padding: "10px 22px",
-              fontWeight: 700,
-              fontSize: "18px",
-              lineHeight: "21px",
-              textTransform: "uppercase",
-              color: "white",
-              ":hover": {
-                background: "var(--hoverRedColor)",
-              },
-              ":disabled": {
-                color: "white",
-              },
-            }}
-          >
+          <AnimeCardList
+            animeList={animeList}
+            limit={limit}
+            ref={animeListRef}
+          />
+          {/* <Button onClick={handleClickMore} disabled={status} sx={buttonStyles}>
             {status ? "Загрузка..." : "Показать больше"}
-          </Button>
+          </Button> */}
         </Main>
       </div>
     </>
