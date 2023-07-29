@@ -58,12 +58,20 @@ export function handleToFullScreen(ref: React.RefObject<HTMLDivElement>) {
   }
 }
 
+export function isPortableDevice() {
+  const validate =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  return validate;
+}
+
 export function sortWords(array: Array<IPreviewAnime>, word: string) {
   if (!array) return [];
   const symbols = /[, :.]/g;
   const replacedText = word.replace(symbols, "").trim().toLowerCase();
   const newArray = array.map((state) => state);
-  const sortArray = newArray.sort((a, _) => {
+  const sortArray = newArray.sort((a) => {
     if (a.name[0].toLowerCase() === replacedText[0]) {
       return -1;
     } else {

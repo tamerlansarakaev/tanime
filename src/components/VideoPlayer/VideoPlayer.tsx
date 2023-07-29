@@ -190,7 +190,13 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
             onEnded={() => {
               setRewind(0);
             }}
-            onPlay={() => props.onPlay(true)}
+            onPlay={() => {
+              if (typeof props.onPlay === "function") {
+                props.onPlay(true);
+              } else {
+                setPlay(true);
+              }
+            }}
             onClick={() => {
               setPlay((prev) => !prev);
             }}
@@ -199,7 +205,9 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
               currentPlayTime
             }
             progressInterval={1000}
-            onPause={() => setPlay(false)}
+            onPause={() => {
+              setPlay(false);
+            }}
             onProgress={(e) => {
               props.onProgress && props.onProgress(e);
               setCurrentPlayTime(e.playedSeconds);

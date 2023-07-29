@@ -57,6 +57,10 @@ const HomePage = () => {
     };
   }, [page]);
 
+  React.useEffect(() => {
+    document.title = 'TANIME'
+  },[])
+
   return (
     <>
       <img src={BackgroundImage} className="bg" />

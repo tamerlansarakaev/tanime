@@ -67,6 +67,11 @@ const WatchPage = () => {
   }
 
   React.useEffect(() => {
+    if (!currentAnime) return;
+    document.title = currentAnime.name;
+  }, [currentAnime]);
+
+  React.useEffect(() => {
     if (!name || !animeList.length) return;
 
     setStatusText("Загрузка...");
