@@ -29,6 +29,10 @@ const SearchPage = () => {
     }, 100);
   }, [animeList]);
 
+  React.useEffect(() => {
+    document.title = 'TANIME'
+  },[])
+
   return (
     <>
       <img src={BackgroundImage} className="bg" />
