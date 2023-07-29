@@ -7,6 +7,6 @@ export interface IVideoPlayerProps {
   onPlay: (e: boolean) => void;
   children: React.ReactNode;
   onChangeProgress: (e: string | number) => void;
-  progress: number;
+  progress?: number;
   onProgress?: (e: OnProgressProps) => void;
 }
