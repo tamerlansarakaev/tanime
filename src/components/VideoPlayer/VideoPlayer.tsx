@@ -68,9 +68,9 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
   const playerRef = React.useRef<ReactPlayer | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const changeProgress = React.useCallback(() => {
     if (
+      typeof props.progress === "number" &&
       playerRef.current &&
       duration &&
       playerRef.current.getCurrentTime() !== props.progress
@@ -104,6 +104,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
         }
         case "ArrowRight": {
           if (playerRef.current) {
+            console.log(playerRef.current.getCurrentTime());
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
           }
           return;
@@ -193,7 +194,10 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
             onClick={() => {
               setPlay((prev) => !prev);
             }}
-            progress={props.progress}
+            progress={
+              (typeof props.progress === "number" && props.progress) ||
+              currentPlayTime
+            }
             progressInterval={1000}
             onPause={() => setPlay(false)}
             onProgress={(e) => {
@@ -224,6 +228,9 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
               onChange={(e: any) => {
                 props.onChangeProgress(e.target.value);
                 setRewind(e.target.value);
+                if (playerRef.current && duration) {
+                  playerRef.current.seekTo(e.target.value);
+                }
               }}
               sx={sliderStyles}
             />
