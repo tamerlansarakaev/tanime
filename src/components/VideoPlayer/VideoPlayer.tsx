@@ -104,7 +104,6 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
         }
         case "ArrowRight": {
           if (playerRef.current) {
-            console.log(playerRef.current.getCurrentTime());
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
           }
           return;
