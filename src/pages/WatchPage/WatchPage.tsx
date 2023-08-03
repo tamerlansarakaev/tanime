@@ -4,7 +4,7 @@ import { useAppSelector } from "../../redux/config";
 import { IAnime } from "../../types";
 
 // Utils
-import { checkGenres } from "../../utils";
+import { checkGenres, deleteForbiddenWords } from "../../utils";
 
 // Components
 import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
@@ -79,7 +79,11 @@ const WatchPage = () => {
       .then((anime) => {
         if (!anime) return;
 
-        setCurrentAnime(anime);
+        setCurrentAnime({
+          ...anime,
+          description: deleteForbiddenWords(anime.description),
+        });
+
         setStatusText("");
       })
       .catch((err) => {

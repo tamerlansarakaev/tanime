@@ -1,5 +1,9 @@
 import { IPreviewAnime } from "../types";
 
+const isForbiddenWords = [
+  "Хочешь татуировку с любимым аниме персонажем, Rare Dare сделает ее для тебя.",
+];
+
 export function checkGenres(genres: Array<string>) {
   if (!genres) return;
   let comma = "";
@@ -15,6 +19,16 @@ export function checkGenres(genres: Array<string>) {
   });
 
   return comma;
+}
+
+export function deleteForbiddenWords(text: string) {
+  if (!text) return "";
+  let resultText = text;
+  isForbiddenWords.forEach((forbiddenWord) => {
+    const regex = new RegExp(forbiddenWord, "gi");
+    resultText = resultText.replace(regex, "");
+  });
+  return resultText;
 }
 
 export function deleteComma(text: string) {
