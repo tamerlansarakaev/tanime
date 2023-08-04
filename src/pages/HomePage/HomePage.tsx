@@ -58,8 +58,8 @@ const HomePage = () => {
   }, [page]);
 
   React.useEffect(() => {
-    document.title = 'TANIME'
-  },[])
+    document.title = "Смотреть Аниме онлайн бесплатно на Tanime";
+  }, []);
 
   return (
     <>
