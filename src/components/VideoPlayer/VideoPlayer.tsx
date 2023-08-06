@@ -145,6 +145,9 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
     if (!play) {
       setVisibilePanel(true);
     }
+    if (play) {
+      setVisibilePanel(false);
+    }
   }, [play]);
 
   return (
