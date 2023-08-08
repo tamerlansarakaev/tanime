@@ -109,10 +109,8 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
           return;
         }
         case "ArrowLeft":
-          {
-            if (playerRef.current) {
-              playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
-            }
+          if (playerRef.current) {
+            playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
           }
           return;
       }
@@ -123,7 +121,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
     return () => {
       document.removeEventListener("keydown", handleKey);
     };
-  }, []);
+  }, [currentPlayTime, props.progress]);
 
   React.useEffect(() => {
     changeProgress();
@@ -211,8 +209,10 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
               setPlay(false);
             }}
             onProgress={(e) => {
-              props.onProgress && props.onProgress(e);
               setCurrentPlayTime(e.playedSeconds);
+              if (props.onProgress) {
+                props.onProgress(e);
+              }
             }}
           />
         ) : (
@@ -237,6 +237,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
               value={currentPlayTime}
               onChange={(e: any) => {
                 props.onChangeProgress(e.target.value);
+                setCurrentPlayTime(e.target.value);
                 setRewind(e.target.value);
                 if (playerRef.current && duration) {
                   playerRef.current.seekTo(e.target.value);
