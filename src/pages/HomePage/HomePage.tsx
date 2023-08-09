@@ -71,9 +71,6 @@ const HomePage = () => {
             limit={limit}
             ref={animeListRef}
           />
-          {/* <Button onClick={handleClickMore} disabled={status} sx={buttonStyles}>
-            {status ? "Загрузка..." : "Показать больше"}
-          </Button> */}
         </Main>
       </div>
     </>

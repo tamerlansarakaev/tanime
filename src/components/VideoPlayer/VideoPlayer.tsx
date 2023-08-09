@@ -2,6 +2,7 @@ import React from "react";
 import ReactPlayer from "react-player";
 
 import styles from "./VideoPlayer.module.scss";
+import { stylesMUI } from "./mui-component-styles.ts";
 
 // Components
 import Slider from "@mui/material/Slider";
@@ -21,38 +22,7 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
 
-const sliderStyles = {
-  color: "#f74343",
-  opacity: "0.5",
-
-  ":hover": {
-    opacity: 1,
-
-    "& .MuiSlider-track": {
-      cursor: "pointer",
-    },
-
-    "& .MuiSlider-thumb": {
-      width: "18px",
-      height: "18px",
-    },
-  },
-
-  "& .MuiSlider-thumb": {
-    width: 0,
-    height: 0,
-    transition: "0.2s",
-  },
-  "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible": {
-    boxShadow: "none",
-  },
-  "& .MuiSlider-thumb.Mui-active": {
-    boxShadow: "none",
-  },
-  "& .MuiSlider-track": {
-    cursor: "default",
-  },
-};
+const cursorPointer = { cursor: "pointer" };
 
 const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
   const [play, setPlay] = React.useState<boolean>(false);
@@ -234,6 +204,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
           <div className={styles.controlPanel}>
             <Slider
               max={duration}
+              onMouseMove={() => handleMouseMove}
               value={currentPlayTime}
               onChange={(e: any) => {
                 props.onChangeProgress(e.target.value);
@@ -243,23 +214,19 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
                   playerRef.current.seekTo(e.target.value);
                 }
               }}
-              sx={sliderStyles}
+              sx={stylesMUI.sliders.progress}
             />
             <div className={styles.elementsGroup}>
               <div className={styles.elements}>
                 {play ? (
                   <PauseIcon
                     onClick={() => setPlay(false)}
-                    sx={{
-                      cursor: "pointer",
-                    }}
+                    sx={cursorPointer}
                   />
                 ) : (
                   <PlayArrowIcon
                     onClick={() => setPlay(true)}
-                    sx={{
-                      cursor: "pointer",
-                    }}
+                    sx={cursorPointer}
                   />
                 )}
                 <Stack spacing={2} direction="row" alignItems="center">
@@ -269,40 +236,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
                     max={100}
                     value={volume * 100}
                     onChange={(e: any) => setVolume(e.target.value / 100)}
-                    sx={{
-                      color: "#fff",
-                      opacity: "0.5",
-                      width: "50px",
-                      cursor: "pointer",
-
-                      ":hover": {
-                        opacity: 1,
-                        "& .MuiSlider-thumb": {
-                          width: "10px",
-                          height: "10px",
-                        },
-
-                        "& .MuiSlider-track": {
-                          cursor: "pointer",
-                        },
-                      },
-
-                      "& .MuiSlider-thumb": {
-                        width: 0,
-                        height: 0,
-                        transition: "0.2s",
-                      },
-                      "& .MuiSlider-thumb:hover, & .MuiSlider-thumb.Mui-focusVisible":
-                        {
-                          boxShadow: "none",
-                        },
-                      "& .MuiSlider-thumb.Mui-active": {
-                        boxShadow: "none",
-                      },
-                      "& .MuiSlider-track": {
-                        cursor: "default",
-                      },
-                    }}
+                    sx={stylesMUI.sliders.volume}
                   />
                   <VolumeUp />
                 </Stack>
