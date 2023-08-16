@@ -9,7 +9,6 @@
 }
 
 .container {
-  
   .videoNotSupported {
     display: flex;
     justify-content: center;
@@ -135,6 +134,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
+      bottom: 0;
     }
 
     &:fullscreen {

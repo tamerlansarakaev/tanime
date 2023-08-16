@@ -21,6 +21,7 @@ import PlayIcon from "../../assets/images/playIcon.svg";
 
 // Utils
 import { checkFullscreenSupport, handleToFullScreen } from "../../utils";
+import { useMobileTabletDetection } from "../../hooks/useMobileTabletDetection.ts";
 
 const cursorPointer = { cursor: "pointer" };
 
@@ -34,7 +35,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
     React.useState(false);
   const [visiblePanel, setVisibilePanel] = React.useState(true);
   const [currentPlayTime, setCurrentPlayTime] = React.useState(0);
-
+  const isMobileOrTablet = useMobileTabletDetection();
   const playerRef = React.useRef<ReactPlayer | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const timeoutId = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -168,7 +169,11 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
               }
             }}
             onClick={() => {
-              setPlay((prev) => !prev);
+              if (!isMobileOrTablet) {
+                setVisibilePanel(true);
+              } else {
+                setPlay((prev) => !prev);
+              }
             }}
             progress={
               (typeof props.progress === "number" && props.progress) ||
