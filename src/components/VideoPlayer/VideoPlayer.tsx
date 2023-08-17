@@ -60,7 +60,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
     }
     timeoutId.current = setTimeout(() => {
       setVisibilePanel(false);
-    }, 4000);
+    }, 3000);
 
     setVisibilePanel(true);
   };
@@ -94,6 +94,14 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
     };
   }, [currentPlayTime, props.progress]);
 
+  const handleClickToPlayer = React.useCallback(() => {
+    if (!isMobileOrTablet) {
+      setVisibilePanel(true);
+    } else {
+      setPlay((prev) => !prev);
+    }
+  }, [isMobileOrTablet, play]);
+
   React.useEffect(() => {
     changeProgress();
 
@@ -115,7 +123,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
       setVisibilePanel(true);
     }
     if (play) {
-      setVisibilePanel(false);
+      handleMouseMove();
     }
   }, [play]);
 
@@ -161,6 +169,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
             onEnded={() => {
               setRewind(0);
             }}
+            key={"videoPlayerKey" + isMobileOrTablet}
             onPlay={() => {
               if (typeof props.onPlay === "function") {
                 props.onPlay(true);
@@ -168,13 +177,7 @@ const VideoPlayer: React.FC<IVideoPlayerProps> = ({ ...props }) => {
                 setPlay(true);
               }
             }}
-            onClick={() => {
-              if (!isMobileOrTablet) {
-                setVisibilePanel(true);
-              } else {
-                setPlay((prev) => !prev);
-              }
-            }}
+            onClick={handleClickToPlayer}
             progress={
               (typeof props.progress === "number" && props.progress) ||
               currentPlayTime

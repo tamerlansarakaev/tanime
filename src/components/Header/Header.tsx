@@ -20,7 +20,7 @@ const Header = ({ logoTitle, links }: IHeader) => {
   const [adaptive, setAdaptive] = React.useState(false);
 
   function handleInnerWidth(width: number) {
-    if (width <= 1100) {
+    if (width <= 800) {
       setAdaptive(true);
     } else {
       setAdaptive(false);
