@@ -9,9 +9,7 @@ export const useMobileTabletDetection = () => {
       const isMobileOrTabletDevice = innerWidth >= 800;
       setIsMobileOrTablet(isMobileOrTabletDevice);
     };
-
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => {
