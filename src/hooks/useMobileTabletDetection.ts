@@ -6,7 +6,8 @@ export const useMobileTabletDetection = () => {
   React.useEffect(() => {
     const handleResize = () => {
       const innerWidth = window.innerWidth;
-      const isMobileOrTabletDevice = innerWidth >= 800;
+      const innerHeight = window.innerHeight;
+      const isMobileOrTabletDevice = innerWidth >= 800 && innerHeight >= 800;
       setIsMobileOrTablet(isMobileOrTabletDevice);
     };
     handleResize();
