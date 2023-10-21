@@ -69,6 +69,11 @@ const WatchPage = () => {
   React.useEffect(() => {
     if (!currentAnime) return;
     document.title = currentAnime.name;
+    if (!document) return;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", currentAnime.description);
+    }
   }, [currentAnime]);
 
   React.useEffect(() => {
