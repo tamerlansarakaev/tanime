@@ -20,10 +20,11 @@ import { useNavigate } from "react-router-dom";
 type Search = {
   onValue?: (e: string) => void;
   onSubmit?: (e: string) => void;
+  onComplete?: (e:boolean) => void;
   maxWidth?: string;
 };
 
-const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
+const Search = ({ onComplete = () => false,onValue, onSubmit, maxWidth = "auto" }: Search) => {
   const dispatch = useAppDispatch();
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const [foundList, setFoundList] = React.useState<IPreviewAnime[]>([]);
@@ -62,21 +63,20 @@ const Search = ({ onValue, onSubmit, maxWidth = "auto" }: Search) => {
 
       const sortedArray = sortWords(response, resultValue);
       setFoundList(sortedArray);
-
+      onComplete(true)
       const resultArray = sortedArray.filter((newItem) => {
         const validate = animeList.findIndex(
           (oldItem) => oldItem.name === newItem.name
         );
         return validate === -1;
       });
-
       dispatch(
         searchAnimeList({
           animeList: [...animeList, ...resultArray],
           searchAnimeList: sortedArray,
         })
       );
-      return;
+      onComplete(false)
     }, 1000);
   };
 
