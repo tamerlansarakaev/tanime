@@ -78,13 +78,7 @@ const Menu = () => {
           />
           <span className={styles.menuTitle}>Меню</span>
           <p className={styles.menuSearchTitle}>Поиск</p>
-          <Search maxWidth="100%" onComplete={(status) => {
-            if(status) {
-              setStatus(false)
-            } else {
-              setStatus(true)
-            }
-          }}/>
+          <Search maxWidth="100%" />
         </div>
       </div>
     </>
