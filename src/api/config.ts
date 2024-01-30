@@ -1,4 +1,4 @@
 export const config = {
-  url: "https://anime-db-taupe.vercel.app/api",
+  url: "https://tanime-db.onrender.com/api",
   API_KEY: "TEST",
 };
