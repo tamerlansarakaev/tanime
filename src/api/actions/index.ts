@@ -6,19 +6,6 @@ import axios from "axios";
 const url = import.meta.env.VITE_DATABASE_URL || "";
 
 class ApiService {
-  // async getAnimeFromPage(page: number) {
-  //   try {
-  //     const response = (await api.get(`/anime/list/${page}`)).data;
-  //     const resultData = response.map((anime: IAnimeResponse) => {
-  //       if (!anime.player.list) return;
-  //       return new Anime({ ...anime }).details;
-  //     });
-  //     return resultData;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
   async getAnimeFromSearch(text: string) {
     try {
       const resultText = text.replace(/[ ]/g, "-");
@@ -38,15 +25,6 @@ class ApiService {
     }
   }
 
-  // async loadAllAnimeFromServer() {
-  //   try {
-  //     const response = await api.get(`/anime/list`);
-  //     return response ? true : false;
-  //   } catch (error) {
-  //     return false;
-  //   }
-  // }
-
   async getPagesLength() {
     try {
       const response = (await api.get(`/anime/pagesLength`)).data;
@@ -64,15 +42,6 @@ class ApiService {
       return anime;
     } catch (error) {
       throw error;
-    }
-  }
-
-  async publishAnime() {
-    try {
-      const response = await api.get(`/load/publish`);
-      return response;
-    } catch (error) {
-      return Error();
     }
   }
 
