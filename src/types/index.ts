@@ -36,6 +36,7 @@ export interface IAnimeResponse {
   names: {
     ru: string;
   };
+  backgroundImage?: string;
   description: string;
   genres: Array<string>;
   code: string;

@@ -20,14 +20,16 @@ export default class Anime implements IAnime {
   genres: string[];
 
   constructor(anime: IAnimeResponse) {
-    this.name = anime.names.ru;
-    this.episodes = this.fixEpisodePreview(Object.values(anime.player.list));
-    this.id = anime.id;
-    this.itemImage = defaultURL + anime.posters.small.url;
-    this.backgroundImage = defaultURL + anime.posters.original.url;
-    this.code = anime.code;
-    this.description = anime.description;
-    this.genres = anime.genres;
+    this.name = anime?.names?.ru;
+    this.episodes = this.fixEpisodePreview(
+      Object.values(anime?.player?.list)
+    );
+    this.id = anime?.id;
+    this.itemImage = defaultURL + anime?.posters?.small?.url;
+    this.backgroundImage = defaultURL + anime?.backgroundImage
+    this.code = anime?.code;
+    this.description = anime?.description;
+    this.genres = anime?.genres;
   }
 
   fixEpisodePreview(list: IEpisode[]) {
@@ -36,9 +38,9 @@ export default class Anime implements IAnime {
         ...state,
         previewImage: state.preview ? defaultURL + state.preview : null,
         video: {
-          fhd: state.hls.fhd ? videoURL + state.hls.fhd : null,
-          hd: state.hls.hd ? videoURL + state.hls.hd : null,
-          sd: state.hls.sd ? videoURL + state.hls.sd : null,
+          fhd: state?.hls?.fhd ? videoURL + state?.hls?.fhd : null,
+          hd: state?.hls?.hd ? videoURL + state?.hls?.hd : null,
+          sd: state?.hls?.sd ? videoURL + state?.hls?.sd : null,
         },
       };
     });
@@ -58,13 +60,13 @@ export class PreviewAnime implements IPreviewAnime {
   genres: string[];
 
   constructor(anime: IPreviewAnime) {
-    this.name = anime.name;
-    this.code = anime.code;
+    this.name = anime?.name;
+    this.code = anime?.code;
     this.poster = {
-      url: defaultURL + anime.poster.url,
+      url: defaultURL + anime?.poster?.url,
     };
-    this.favorite = anime.favorite || 0;
-    this.genres = anime.genres;
+    this.favorite = anime?.favorite || 0;
+    this.genres = anime?.genres;
   }
 
   get details() {

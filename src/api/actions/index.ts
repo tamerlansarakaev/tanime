@@ -3,48 +3,19 @@ import { IAnimeResponse, IPreviewAnime } from "../../types";
 import Anime, { PreviewAnime } from "../Anime";
 import axios from "axios";
 
-const url =
-  "https://tanime-e1e71-default-rtdb.europe-west1.firebasedatabase.app";
+const url = import.meta.env.VITE_DATABASE_URL || "";
 
 class ApiService {
-  // async getAllAnime() {
+  // async getAnimeFromPage(page: number) {
   //   try {
-  //     const response = (await api.get("/anime/list/last")).data;
+  //     const response = (await api.get(`/anime/list/${page}`)).data;
   //     const resultData = response.map((anime: IAnimeResponse) => {
   //       if (!anime.player.list) return;
   //       return new Anime({ ...anime }).details;
   //     });
   //     return resultData;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
-
-  async getAnimeFromPage(page: number) {
-    try {
-      const response = (await api.get(`/anime/list/${page}`)).data;
-      const resultData = response.map((anime: IAnimeResponse) => {
-        if (!anime.player.list) return;
-        return new Anime({ ...anime }).details;
-      });
-      return resultData;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  // async getAnimeFromSearch(text: string) {
-  //   try {
-  //     const response = await api
-  //       .post("/search", { name: text.toLowerCase() })
-  //       .then((data) => data.data);
-  //     const resultData = response.map((anime: IAnimeResponse) => {
-  //       if (!anime.player.list) return;
-  //       return new Anime({ ...anime }).details;
-  //     });
-  //     return resultData;
-  //   } catch (error) {
-  //     return error;
+  //   } catch (err) {
+  //     console.log(err);
   //   }
   // }
 
@@ -67,14 +38,14 @@ class ApiService {
     }
   }
 
-  async loadAllAnimeFromServer() {
-    try {
-      const response = await api.get(`/load/anime`);
-      return response ? true : false;
-    } catch (error) {
-      return false;
-    }
-  }
+  // async loadAllAnimeFromServer() {
+  //   try {
+  //     const response = await api.get(`/anime/list`);
+  //     return response ? true : false;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }
 
   async getPagesLength() {
     try {
@@ -87,14 +58,12 @@ class ApiService {
 
   async getAnimeWithCode(code: string): Promise<any> {
     try {
-      const response = await api
-        .get(`/anime/searchWithCode/${code}`)
-        .then((anime) => {
-          return new Anime({ ...anime.data }).details;
-        });
-      return response;
+      const animeResponse = await api.get(`/anime/${code}`);
+      const anime = new Anime({ ...animeResponse.data }).details;
+      console.log(anime);
+      return anime;
     } catch (error) {
-      return Error();
+      throw error;
     }
   }
 

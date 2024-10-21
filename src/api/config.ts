@@ -1,4 +1,4 @@
 export const config = {
-  url: "https://anime-db-taupe.vercel.app/api",
+  url: import.meta.env.VITE_API_URL,
   API_KEY: "TEST",
 };

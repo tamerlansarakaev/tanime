@@ -29,15 +29,15 @@ function App() {
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const alertList = useAppSelector((state) => state.alertReducer.alertList);
 
-  const loadAllAnimeForServer = async () => {
-    try {
-      const loadAnime = await ApiService.loadAllAnimeFromServer();
-      setModalStatus(false);
-      return loadAnime;
-    } catch (err) {
-      return err;
-    }
-  };
+  // const loadAllAnimeForServer = async () => {
+  //   try {
+  //     const loadAnime = await ApiService.loadAllAnimeFromServer();
+  //     setModalStatus(false);
+  //     return loadAnime;
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // };
 
   React.useEffect(() => {
     if (!animeList.length) {
@@ -48,17 +48,17 @@ function App() {
           dispatch(loadAnime({ animeList: newAnimeList, page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer().then((status) => {
-            if (!status) return;
-            ApiService.publishAnime();
-          });
+          // loadAllAnimeForServer().then((status) => {
+          //   if (!status) return;
+          //   ApiService.publishAnime();
+          // });
         });
       } catch (error) {
         ApiService.getAllAnime().then(async (data) => {
           dispatch(loadAnime({ animeList: data as IPreviewAnime[], page: 1 }));
           setModalStatus(false);
 
-          loadAllAnimeForServer().then(() => ApiService.publishAnime());
+          // loadAllAnimeForServer().then(() => ApiService.publishAnime());
           return error;
         });
       }

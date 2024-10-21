@@ -37,7 +37,7 @@ const WatchPage = () => {
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const videoUrl =
     (currentAnime &&
-      currentAnime.episodes[settingEpisode.episode - 1]?.video[setQuality()]) ||
+      currentAnime.episodes?.[settingEpisode?.episode - 1]?.video[setQuality()]) ||
     "";
 
   React.useEffect(() => {
@@ -67,23 +67,23 @@ const WatchPage = () => {
   }
 
   React.useEffect(() => {
-    if (!currentAnime) return;
-    document.title = currentAnime.name;
-    if (!document) return;
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", currentAnime.description);
+    if (currentAnime) {
+      document.title = currentAnime?.name;
+      const metaDescription = document.querySelector(
+        'meta[name="description"]'
+      );
+      if (metaDescription) {
+        metaDescription.setAttribute("content", currentAnime?.description);
+      }
     }
   }, [currentAnime]);
 
   React.useEffect(() => {
     if (!name || !animeList.length) return;
-
     setStatusText("Загрузка...");
     AnimeService.getAnimeWithCode(name)
       .then((anime) => {
         if (!anime) return;
-
         setCurrentAnime({
           ...anime,
           description: deleteForbiddenWords(anime.description),
