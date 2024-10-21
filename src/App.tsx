@@ -29,16 +29,6 @@ function App() {
   const animeList = useAppSelector((state) => state.dataReducer.animeList);
   const alertList = useAppSelector((state) => state.alertReducer.alertList);
 
-  // const loadAllAnimeForServer = async () => {
-  //   try {
-  //     const loadAnime = await ApiService.loadAllAnimeFromServer();
-  //     setModalStatus(false);
-  //     return loadAnime;
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // };
-
   React.useEffect(() => {
     if (!animeList.length) {
       try {
