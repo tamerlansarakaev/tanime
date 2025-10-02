@@ -8,7 +8,7 @@
 
 ## About TANIME
 
-TANIME is a project to watch anime in russian language, you can find interested anime using search which located in upper right just [watch and enjoy](https://tanime.ru)
+TANIME is a project to watch anime in russian language, you can find interested anime using search which located in upper right just watch and enjoy
 
 ## Build With
 
